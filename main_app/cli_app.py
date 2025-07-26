@@ -1,8 +1,22 @@
 import json
+from typing import Callable
 
 # Global Variable to keep track if automatic module selection is on/off
 auto_step = False
-
+# Global Variable to keep track of the last page visited
+page_history_stack: list[Callable] = [exit]
+# Global Variable to set inputs
+input_data = {
+    "Building Code": "International Building Code 2021",
+    "Occupancy Group": "",
+    "Risk Category": "",
+    "Roof Angle": "",
+    "Building Length": "",
+    "Least Width": "",
+    "Mean Roof Height": ""
+}
+# Global variable to store code_data
+code_data = {}
 
 def process_json(f_path):
     """
@@ -15,26 +29,78 @@ def process_json(f_path):
     with open(f_path, 'r') as fd:
         data = json.load(fd)
 
+    return data
 
-def get_inp(min_num, max_num, invalid=False):
+
+def create_dict(data:dict):
+    """
+
+    :param data:
+    :return:
+    """
+
+    export = {}
+    for index, (key, value) in enumerate(data.items()):
+        export[index+1] = key
+
+    return export
+
+
+def create_view(arr, option:dict):
+    """
+    Function creates the CLI view
+    :param arr: string of headers
+    :param option: string of menu items
+    :return: none
+    """
+
+    print(
+        "-----------------------------------------------------------------------------------")
+    print(f"{arr[0]}")
+    print(
+        "-----------------------------------------------------------------------------------")
+
+    print(arr[1])
+
+    for key, value in option.items():
+        print(f"\t{key}. {value}")
+
+    print(
+        "-----------------------------------------------------------------------------------")
+
+
+def get_inp(min_num, max_num, is_main=False, invalid=False):
     """
     Function checks if the input entered is in range and return True or False
     :param min_num
     :param max_num
     :param invalid: boolean
+    :param is_main: boolean
     :return: boolean
     """
 
     if not invalid:
-        choice = input(f"Enter the number of your choice ({min_num}-{max_num}, "
-                            f"'next' or '*' to exit) : ")
+        if is_main:
+            choice = input(f"Enter the number of your choice ({min_num}-"
+                           f" {max_num}, 'next' or '*' to exit) : >")
+        else:
+            choice = input(
+                f"Enter the number of your choice ({min_num}-{max_num}, "
+                f"'*' to go back) : >")
     else:
-        choice = input(f"Invalid Input. Please enter the number of your "
-                       f"choice ({min_num}-{max_num}, next' or '*' to exit) : ")
-
+        if is_main:
+            choice = input(f"Invalid Input. Please enter the number of your "
+                           f"choice ({min_num}-{max_num}, next' or '*' to exit) "
+                           f": >")
+        else:
+            choice = input(f"Invalid Input. Please enter the number of your "
+                           f"choice ({min_num}-{max_num}, '*' to go back) "
+                           f": >")
 
     if choice == "*":
-        exit(0)
+        global page_history_stack
+        return page_history_stack.pop()()
+
     elif choice == "next":
         # Declare global variable
         global auto_step
@@ -46,9 +112,31 @@ def get_inp(min_num, max_num, invalid=False):
             return choice
     # If user entered string
     except ValueError:
-        return get_inp(min_num, max_num, True)
+        return get_inp(min_num, max_num, is_main, True)
 
-    return get_inp(min_num, max_num, True)
+    return get_inp(min_num, max_num, is_main, True)
+
+
+def confirm_selection(selection, call_function, next_function):
+    """
+    Function to view the confirmation selection of the input made
+    :return: integer
+    """
+
+    print(f"You selected:\n>{selection}\n")
+    print("Would you like to:")
+    print("\t 1. Confirm and Proceed")
+    print("\t 2. Edit this input")
+
+    choice = get_inp(1, 2)
+
+    if int(choice) == 2:
+        return call_function()
+
+    if auto_step:
+        return next_function()
+    else:
+        return page_history_stack.pop()()
 
 
 def main_menu():
@@ -57,37 +145,37 @@ def main_menu():
     :return:
     """
 
-    print(
-        "-----------------------------------------------------------------------------------")
-    print(
-        "                              STRUCTURAL LOAD GENERATOR                            ")
-    print(
-        "-----------------------------------------------------------------------------------")
+    option_str = {
+        1: "Code Setting        [ Set building code, occupancy, risk, "
+            "geometry ]",
+        2: "Select Location     [ Enter the site location of the building ]",
+        3: "Wind Module         [ Generate Wind Loads ]",
+        4: "Seismic Module      [ Generate Seismic Loads ]",
+        5: "Snow Module         [ Generate Snow Loads ]"
+    }
 
-    print("Please select a module to continue :")
-    print(
-        "\t1. Code Setting        [ Set building code, occupancy, risk, geometry ]")
-    print(
-        "\t2. Select Location     [ Enter the site location of the building ]")
-    print(
-        "\t3. Wind Module         [ Generate Wind Loads ]")
-    print(
-        "\t4. Seismic Module      [ Generate Seismic Loads ]")
-    print(
-        "\t5. Snow Module         [ Generate Snow Loads ]")
-    print(
-        "-----------------------------------------------------------------------------------")
+    create_view(
+        [
+            "STRUCTURAL LOAD GENERATOR",
+            "Please select a module to continue :"
+        ], option_str
+    )
+
     print("next     - Automatically step through all module")
     print("*        - Exit the program\n")
 
-    choice = get_inp(1, 5)
+    choice = get_inp(1, len(option_str), True)
+
+    # Add main menu to page visited
+    global page_history_stack
+    page_history_stack.append(main_menu)
 
     match choice:
-        case 1: code_setting()
-        case 2: select_location()
-        case 3: wind_module()
-        case 4: seismic_module()
-        case 5: snow_module()
+        case '1': code_setting()
+        case '2': select_location()
+        case '3': wind_module()
+        case '4': seismic_module()
+        case '5': snow_module()
         case _: code_setting()
 
 
@@ -97,39 +185,39 @@ def code_setting():
     :return:
     """
 
-    print(
-        "-----------------------------------------------------------------------------------")
-    print(
-        "                                CODE SETTINGS MODULE                               ")
-    print(
-        "-----------------------------------------------------------------------------------")
+    option_str = {
+        1: "Select Building Code",
+        2: "Select Occupancy Group",
+        3: "Manually Set Risk Category",
+        4: "Input Building Geometry"
+    }
 
-    print("Choose an option :")
-    print(
-        "\t1. Select Building Code")
-    print(
-        "\t2. Select Occupancy Group")
-    print(
-        "\t3. Manually Set Risk Category")
-    print(
-        "\t4. Input Building Geometry")
-    print(
-        "-----------------------------------------------------------------------------------")
+    create_view(
+        [
+            "CODE SETTINGS MODULE",
+            "Choose an option: "
+        ], option_str
+    )
+
     print("*        - Go back to Main Menu\n")
 
     if not auto_step:
-        choice = get_inp(1, 4)
+        choice = get_inp(1, len(option_str))
     else:
         choice = "next"
 
+    # Add main menu to page visited
+    global page_history_stack
+    page_history_stack.append(code_setting)
+
     match choice:
-        case 1:
+        case '1':
             select_building_code()
-        case 2:
+        case '2':
             select_occupancy_group()
-        case 3:
+        case '3':
             manual_select_risk_category()
-        case 4:
+        case '4':
             input_building_geometry()
         case _:
             select_building_code()
@@ -141,7 +229,28 @@ def select_building_code():
     :return:
     """
 
-    pass
+    option_str = {
+        1: "International Building Code 2021",
+        2: "International Building Code 2018",
+        3: "ASCE 7-16",
+        4: "Unified Facilities Criteria"
+    }
+
+    create_view(
+        [
+            "SELECT BUILDING CODE",
+            "Choose the applicable code for your project :"
+        ], option_str
+    )
+
+    print("*        - Go back to Code Settings\n")
+
+    choice = get_inp(1, len(option_str))
+    global input_data
+    input_data["Building Code"] = option_str[int(choice)]
+
+    confirm_selection(option_str[int(choice)], select_building_code,
+                      select_occupancy_group)
 
 
 def select_occupancy_group():
@@ -150,7 +259,26 @@ def select_occupancy_group():
     :return:
     """
 
-    pass
+    global input_data
+    global code_data
+
+    option_str = create_dict(code_data[input_data["Building Code"]][
+        "OccupancyGroups"])
+
+    create_view(
+        [
+            "SELECT OCCUPANCY GROUP",
+            "Choose the occupancy group for your project :"
+        ], option_str
+    )
+
+    print("*        - Go back to Code Settings\n")
+
+    choice = get_inp(1, len(option_str))
+    input_data["Occupancy Group"] = option_str[int(choice)]
+
+    confirm_selection(option_str[int(choice)], select_occupancy_group,
+                      input_building_geometry)
 
 
 def manual_select_risk_category():
@@ -159,7 +287,38 @@ def manual_select_risk_category():
     :return:
     """
 
-    pass
+    global input_data
+    global code_data
+
+    option_str = create_dict(code_data[input_data["Building Code"]][
+                                 "RiskCategories"])
+
+    if input_data["Occupancy Group"] == "":
+        create_view(
+            [
+                "SELECT RISK CATEGORIES",
+                "Choose the risk category for your project :"
+            ], option_str
+        )
+    else:
+        risk_category = code_data[input_data["Building Code"]][
+                                 "OccupancyGroups"][input_data["Occupancy Group"]]
+        create_view(
+            [
+                "SELECT RISK CATEGORIES",
+                f"Risk Category Selected from Occupancy Group: "
+                f"{risk_category}\n"
+                "Choose the risk category to overwrite above:"
+            ], option_str
+        )
+
+    print("*        - Go back to Code Settings\n")
+
+    choice = get_inp(1, len(option_str))
+    input_data["Risk Category"] = option_str[int(choice)]
+
+    confirm_selection(option_str[int(choice)], manual_select_risk_category,
+                      input_building_geometry)
 
 
 def input_building_geometry():
@@ -214,6 +373,7 @@ def main():
     """
 
     f_path = "code_data.json"
+    global code_data
     code_data = process_json(f_path)
 
     main_menu()
