@@ -1,0 +1,126 @@
+{
+  "International Building Code 2021": {
+    "OccupancyGroups": {
+      "Group A (Assembly) – occupant load ≤ 300": "II",
+      "Group A (Assembly) – occupant load > 300": "III",
+
+      "Group B (Business)": "II",
+
+      "Group E (Education) – occupant load ≤ 250": "II",
+      "Group E (Education) – occupant load > 250": "III",
+
+      "Group I-2 (non-surgery) – resident care < 50": "II",
+      "Group I-2 (non-surgery) – resident care ≥ 50": "III",
+      "Group I-2 (with surgery / emergency treatment)": "IV",
+
+      "Group I-3 (Detention / correctional)": "III",
+
+      "Group I-4 (Day-care) – occupant load ≤ 150": "II",
+      "Group I-4 (Day-care) – occupant load > 150": "III",
+
+      "Group M (Mercantile)": "II",
+      "Group M (Mercantile) - occupant load > 5000": "III",
+
+      "Group R (Residential)": "II",
+
+      "Group S (Storage)": "II",
+      "Group S (Storage) - toxic/explosive materials or occupant load > 5000": "III",
+
+      "Group U (Utility/agricultural/minor storage)": "I",
+
+      "Power / water / wastewater utilities (non-essential)": "III",
+      "Any occupancy with occupant load > 5 000": "III",
+      "Temporary facilities (≤ 180 days)": "I",
+
+      "Essential facilities (fire, police, EMS, designated shelters, emergency ops centers)": "IV",
+      "Facilities with highly toxic materials (above IFC control-area limits)": "IV",
+      "Aviation control towers & emergency aircraft hangars": "IV",
+      "Critical national-defense facilities": "IV",
+
+      "All others": "II"
+    },
+    "RiskCategories": {
+      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00 },
+      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00 },
+      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25 },
+      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50 }
+    }
+  },
+  "International Building Code 2018": {
+    "OccupancyGroups": {
+      "Group A (Assembly) – occupant load ≤ 300": "II",
+      "Group A (Assembly) – occupant load > 300": "III",
+
+      "Group B (Business)": "II",
+
+      "Group E (Education) – occupant load ≤ 250": "II",
+      "Group E (Education) – occupant load > 250": "III",
+
+      "Group I-2 (non-surgery) – resident care < 50": "II",
+      "Group I-2 (non-surgery) – resident care ≥ 50": "III",
+      "Group I-2 (with surgery / emergency treatment)": "IV",
+
+      "Group I-3 (Detention / correctional)": "III",
+
+      "Group I-4 (Day-care) – occupant load ≤ 150": "II",
+      "Group I-4 (Day-care) – occupant load > 150": "III",
+
+      "Group M (Mercantile)": "II",
+      "Group M (Mercantile) - occupant load > 5000": "III",
+
+      "Group R (Residential)": "II",
+
+      "Group S (Storage)": "II",
+      "Group S (Storage) - toxic/explosive materials or occupant load > 5000": "III",
+
+      "Group U (Utility/agricultural/minor storage)": "I",
+
+      "Power / water / wastewater utilities (non-essential)": "III",
+      "Any occupancy with occupant load > 5 000": "III",
+      "Temporary facilities (≤ 180 days)": "I",
+
+      "Essential facilities (fire, police, EMS, designated shelters, emergency ops centers)": "IV",
+      "Facilities with highly toxic materials (above IFC control-area limits)": "IV",
+      "Aviation control towers & emergency aircraft hangars": "IV",
+      "Critical national-defense facilities": "IV",
+
+      "All others": "II"
+    },
+    "RiskCategories": {
+      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00 },
+      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00 },
+      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25 },
+      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50 }
+    }
+  },
+  "ASCE 7-16": {
+    "OccupancyGroups": {
+      "Category I - Low-hazard": "I",
+      "Category II — Standard occupancy": "II",
+      "Category III — Substantial hazard to life": "III",
+      "Category IV — Essential facilities": "IV"
+    },
+    "RiskCategories": {
+      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00 },
+      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00 },
+      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25 },
+      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50 }
+    }
+  },
+  "Unified Facilities Criteria": {
+    "OccupancyGroups": {
+      "Category I — Low hazard": "I",
+      "Category II — Standard occupancy": "II",
+      "Category III — Substantial hazard to life": "III",
+      "Category IV — Essential facilities": "IV",
+      "Category V — National strategic military assets": "V"
+    },
+    "RiskCategories": {
+      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00 },
+      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00 },
+      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25 },
+      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50 },
+      "V":  { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.00 }
+    }
+  }
+}
