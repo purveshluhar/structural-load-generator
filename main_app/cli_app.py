@@ -391,11 +391,42 @@ def input_building_geometry():
 
 def summary_inputs():
     """
-
+    Function summarizes all the inputs of the structure
     :return:
     """
 
-    pass
+    global input_data
+    print_data = {}
+    for index, (key, value) in enumerate(input_data.items()):
+        print_data[f"{index+1}. {key}"] = value
+
+    create_view(
+        [
+            "SUMMARY OF INPUTS",
+            "The loads will be generated as per below summarized inputs for the structure:"
+        ], print_data
+    )
+
+    print("Please select an option: ")
+    print(f"1-{len(input_data)}: Edit that input")
+    print("*        - Go back to Code Settings")
+    print("**       - Go back to Main Menu")
+    print("Proceed to Wind, Seismic, or Snow Module once inputs are "
+          "confirmed.\n")
+
+    choice = get_inp(1, 7)
+
+    match choice:
+        case '1':
+            select_building_code()
+        case '2':
+            select_occupancy_group()
+        case '3':
+            manual_select_risk_category()
+        case '4' | '5' | '6' | '7':
+            input_building_geometry()
+        case _:
+            select_location()
 
 
 def select_location():
