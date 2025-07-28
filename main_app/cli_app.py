@@ -10,10 +10,10 @@ input_data = {
     "Building Code": "International Building Code 2021",
     "Occupancy Group": "",
     "Risk Category": "",
-    "Roof Angle": "",
-    "Building Length": "",
-    "Least Width": "",
-    "Mean Roof Height": ""
+    "Roof Angle (deg)": "",
+    "Building Length (ft)": "",
+    "Least Width (ft)": "",
+    "Mean Roof Height (ft)": ""
 }
 # Global variable to store code_data
 code_data = {}
@@ -69,52 +69,76 @@ def create_view(arr, option:dict):
         "-----------------------------------------------------------------------------------")
 
 
-def get_inp(min_num, max_num, is_main=False, invalid=False):
+def get_inp(min_num=0, max_num=0, is_main=False, invalid=False,
+            is_range=True, display="", input_typ:type=int):
     """
     Function checks if the input entered is in range and return True or False
     :param min_num
     :param max_num
     :param invalid: boolean
     :param is_main: boolean
+    :param is_range: boolean
+    :param input_typ
+    :param display
     :return: boolean
     """
 
-    if not invalid:
-        if is_main:
-            choice = input(f"Enter the number of your choice ({min_num}-"
-                           f" {max_num}, 'next' or '*' to exit) : >")
+    if is_range:
+        if not invalid:
+            if is_main:
+                choice = input(f"Enter the number of your choice ({min_num}-"
+                               f" {max_num}, 'next' or '*' to exit) : > ")
+            else:
+                choice = input(
+                    f"Enter the number of your choice ({min_num}-{max_num}, "
+                    f"'*' to go back) : > ")
         else:
-            choice = input(
-                f"Enter the number of your choice ({min_num}-{max_num}, "
-                f"'*' to go back) : >")
+            if is_main:
+                choice = input(f"Invalid Input. Please enter the number of your "
+                               f"choice ({min_num}-{max_num}, next' or '*' to exit) "
+                               f": > ")
+            else:
+                choice = input(f"Invalid Input. Please enter the number of your "
+                               f"choice ({min_num}-{max_num}, '*' to go back) "
+                               f": > ")
     else:
-        if is_main:
-            choice = input(f"Invalid Input. Please enter the number of your "
-                           f"choice ({min_num}-{max_num}, next' or '*' to exit) "
-                           f": >")
+        if not invalid:
+            choice = input(display)
         else:
-            choice = input(f"Invalid Input. Please enter the number of your "
-                           f"choice ({min_num}-{max_num}, '*' to go back) "
-                           f": >")
+            print("Invalid Input. Try again")
+            choice = input(display)
 
-    if choice == "*":
-        global page_history_stack
-        return page_history_stack.pop()()
+    global page_history_stack
+    if type(choice) == str:
+        if "*" in choice:
+            call_func = ()
+            for i in range(choice.count("*")):
+                call_func = page_history_stack.pop()
 
-    elif choice == "next":
-        # Declare global variable
-        global auto_step
-        auto_step = True
-        return "next"
+            return call_func()
+        elif choice == "next":
+            # Declare global variable
+            global auto_step
+            auto_step = True
+            return "next"
+        elif choice == "start":
+            return ""
 
-    try:
-        if min_num <= int(choice) <= max_num:
-            return choice
-    # If user entered string
-    except ValueError:
-        return get_inp(min_num, max_num, is_main, True)
+    if is_range:
+        try:
+            if min_num <= int(choice) <= max_num:
+                return choice
+        # If user entered string
+        except ValueError:
+            return get_inp(min_num, max_num, is_main, True)
+    else:
+        try:
+            if type(float(choice)) == input_typ:
+                return float(choice)
+        except ValueError:
+            return get_inp(min_num, max_num, is_main, True, is_range, display, input_typ)
 
-    return get_inp(min_num, max_num, is_main, True)
+    return ""
 
 
 def confirm_selection(selection, call_function, next_function):
@@ -123,7 +147,7 @@ def confirm_selection(selection, call_function, next_function):
     :return: integer
     """
 
-    print(f"You selected:\n>{selection}\n")
+    print(f"\nYou selected:\n{selection}\n")
     print("Would you like to:")
     print("\t 1. Confirm and Proceed")
     print("\t 2. Edit this input")
@@ -133,6 +157,7 @@ def confirm_selection(selection, call_function, next_function):
     if int(choice) == 2:
         return call_function()
 
+    global auto_step
     if auto_step:
         return next_function()
     else:
@@ -189,7 +214,8 @@ def code_setting():
         1: "Select Building Code",
         2: "Select Occupancy Group",
         3: "Manually Set Risk Category",
-        4: "Input Building Geometry"
+        4: "Input Building Geometry",
+        5: "Summary of Inputs"
     }
 
     create_view(
@@ -219,6 +245,8 @@ def code_setting():
             manual_select_risk_category()
         case '4':
             input_building_geometry()
+        case '5':
+            summary_inputs()
         case _:
             select_building_code()
 
@@ -324,6 +352,46 @@ def manual_select_risk_category():
 def input_building_geometry():
     """
     Function to define building geometry
+    :return:
+    """
+
+    global input_data
+    option_str = {
+        1: "Roof Angle (deg)",
+        2: "Building Length (ft)",
+        3: "Least Width (ft)",
+        4: "Mean Roof Height (ft)"
+    }
+
+    create_view(
+        [
+            "INPUT BUILDING GEOMETRY",
+            "You will be asked to provide the following: "
+        ], option_str
+    )
+
+    print("start    - To begin input")
+    print("*        - Go back to Code Settings\n")
+
+    message = "Type 'start' to begin or '*' to go back: > "
+    get_inp(is_range=False, display=message, input_typ=str)
+    for key, value in option_str.items():
+        choice = get_inp(display=f"{key}. {value}: > ", input_typ=float,
+                         is_range=False)
+        input_data[value] = choice
+
+    message = ""
+    for key, value in option_str.items():
+        message += f"{value}: {input_data[value]}"
+        if value != "Mean Roof Height (ft)":
+            message += "\n"
+
+    confirm_selection(message, input_building_geometry, summary_inputs)
+
+
+def summary_inputs():
+    """
+
     :return:
     """
 
