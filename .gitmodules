@@ -1,0 +1,3 @@
+[submodule "microservices/CS361-geo_locator"]
+	path = microservices/CS361-geo_locator
+	url = https://github.com/facesnorth/CS361-geo_locator.git
