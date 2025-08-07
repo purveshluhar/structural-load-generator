@@ -13,7 +13,8 @@ def check_data(data:bytearray):
     :return: bool, str
     """
 
-    req_key = ['latitude', 'longitude', 'riskCategory', 'siteClass', 'title']
+    req_key = ['latitude', 'longitude', 'riskCategory', 'siteClass',
+               'title', 'R', 'I', 'W', 'Building Code']
     message = {}
 
     for value in data:

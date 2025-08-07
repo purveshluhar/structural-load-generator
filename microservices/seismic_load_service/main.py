@@ -11,12 +11,18 @@ from helper_func.request import get_request
 from helper_func.socket_handler import (setup_socket_server,
                                         send_message_json, recv_message_json)
 from helper_func.check_data import check_data
+from helper_func.simple_eval import formula_eval
+import json
 
 def run_service():
     """
     Main to run the service
     :return:
     """
+
+    # Load seismic formula
+    with open("seismic_formula.json", 'r') as fd:
+        formulas = json.load(fd)
 
     # Load the PORT from the .env
     load_dotenv()
@@ -37,8 +43,40 @@ def run_service():
             continue
 
         url = "https://earthquake.usgs.gov/ws/designmaps/asce7-16.json"
+        req_data = {
+            "latitude": recv_data["latitude"],
+            "longitude": recv_data["longitude"],
+            "riskCategory": recv_data["riskCategory"],
+            "siteClass": recv_data["siteClass"],
+            "title": recv_data["title"]
+        }
 
-        data = get_request(url, recv_data)
+        api_data = get_request(url, req_data)
+
+        f_val = {
+            "Sds": api_data["response"]["data"]["sds"],
+            "R": recv_data["R"],
+            "I": recv_data["I"]
+        }
+
+        # Calculate Cs
+        r = formula_eval(f_val, formulas[recv_data["Building Code"]][
+            "Cs"]["expression"])
+
+        # Calculate V
+        f_val = {
+            "Cs": r,
+            "W": recv_data["W"]
+        }
+
+        # Calculate V
+        r = formula_eval(f_val, formulas[recv_data["Building Code"]][
+            "V"]["expression"])
+
+        # Send calculated load to client
+        send_message_json(socket, {
+            "V": r
+        })
 
 
 if __name__ == "__main__":

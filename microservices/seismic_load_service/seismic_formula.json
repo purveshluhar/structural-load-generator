@@ -1,0 +1,42 @@
+{
+  "International Building Code 2021": {
+    "Cs": {
+    "expression": "Sds / (R / I)",
+    "variables": ["Sds", "R", "I"]
+    },
+    "V": {
+    "expression": "Cs * W",
+    "variables": ["Cs", "W"]
+    }
+  },
+  "International Building Code 2018": {
+    "Cs": {
+    "expression": "Sds / (R / I)",
+    "variables": ["Sds", "R", "I"]
+    },
+    "V": {
+    "expression": "Cs * W",
+    "variables": ["Cs", "W"]
+    }
+  },
+  "ASCE 7-16": {
+    "Cs": {
+    "expression": "Sds / (R / I)",
+    "variables": ["Sds", "R", "I"]
+    },
+    "V": {
+    "expression": "Cs * W",
+    "variables": ["Cs", "W"]
+    }
+  },
+  "Unified Facilities Criteria": {
+    "Cs": {
+    "expression": "Sds / (R / I)",
+    "variables": ["Sds", "R", "I"]
+    },
+    "V": {
+    "expression": "Cs * W",
+    "variables": ["Cs", "W"]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "International Building Code 2021": {
+    "pf": {
+    "expression": "0.7 * Ce * Ct * I * Pg",
+    "variables": ["Ce", "Ct", "Ct", "I", "Pg"]
+    }
+  },
+  "International Building Code 2018": {
+    "pf": {
+    "expression": "0.7 * Ce * Ct * I * Pg",
+    "variables": ["Ce", "Ct", "Ct", "I", "Pg"]
+    }
+  },
+  "ASCE 7-16": {
+    "pf": {
+    "expression": "0.7 * Ce * Ct * I * Pg",
+    "variables": ["Ce", "Ct", "Ct", "I", "Pg"]
+    }
+  },
+  "Unified Facilities Criteria": {
+    "pf": {
+    "expression": "0.7 * Ce * Ct * I * Pg",
+    "variables": ["Ce", "Ct", "Ct", "I", "Pg"]
+    }
+  }
+}

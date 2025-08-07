@@ -1,32 +1,30 @@
 import json
 from typing import Callable
+from dotenv import load_dotenv
+import os
+from helper_func.socket_handler import (setup_socket_client,
+                                        send_message_str, send_message_json,
+                                        recv_message_json)
 
 # Global Variable to keep track if automatic module selection is on/off
 auto_step = False
 # Global Variable to keep track of the last page visited
 page_history_stack: list[Callable] = [exit]
-# Global Variable to set inputs
-input_data = {
-    "Building Code": "International Building Code 2021",
-    "Occupancy Group": "",
-    "Risk Category": "",
-    "Roof Angle (deg)": "",
-    "Building Length (ft)": "",
-    "Least Width (ft)": "",
-    "Mean Roof Height (ft)": ""
-}
+# Global Variable to set input_data
+input_data = {}
 # Global variable to store code_data
 code_data = {}
 
-def process_json(f_path):
+def process_json(f_path, mode='r'):
     """
     Function to process JSON file
     :param f_path: string, json file path
+    :param mode:
     :return: dictionary
     """
 
     # Load from code data from JSON file
-    with open(f_path, 'r') as fd:
+    with open(f_path, mode) as fd:
         data = json.load(fd)
 
     return data
@@ -46,11 +44,12 @@ def create_dict(data:dict):
     return export
 
 
-def create_view(arr, option:dict):
+def create_view(arr, option:dict, is_summary=False):
     """
     Function creates the CLI view
     :param arr: string of headers
     :param option: string of menu items
+    :param is_summary:
     :return: none
     """
 
@@ -62,8 +61,12 @@ def create_view(arr, option:dict):
 
     print(arr[1])
 
-    for key, value in option.items():
-        print(f"\t{key}. {value}")
+    if not is_summary:
+        for key, value in option.items():
+            print(f"\t{key}. {value}")
+    else:
+        for key, value in option.items():
+            print(f"\t{key}: {value}")
 
     print(
         "-----------------------------------------------------------------------------------")
@@ -131,17 +134,20 @@ def get_inp(min_num=0, max_num=0, is_main=False, invalid=False,
         # If user entered string
         except ValueError:
             return get_inp(min_num, max_num, is_main, True)
-    else:
+    elif input_typ != str:
         try:
             if type(float(choice)) == input_typ:
                 return float(choice)
         except ValueError:
             return get_inp(min_num, max_num, is_main, True, is_range, display, input_typ)
+    else:
+        return choice
 
     return ""
 
 
-def confirm_selection(selection, call_function, next_function):
+def confirm_selection(selection, call_function, next_function,
+                      exception=False, efunction=()):
     """
     Function to view the confirmation selection of the input made
     :return: integer
@@ -160,6 +166,8 @@ def confirm_selection(selection, call_function, next_function):
     global auto_step
     if auto_step:
         return next_function()
+    elif exception:
+        return efunction()
     else:
         return page_history_stack.pop()()
 
@@ -176,7 +184,8 @@ def main_menu():
         2: "Select Location     [ Enter the site location of the building ]",
         3: "Wind Module         [ Generate Wind Loads ]",
         4: "Seismic Module      [ Generate Seismic Loads ]",
-        5: "Snow Module         [ Generate Snow Loads ]"
+        5: "Snow Module         [ Generate Snow Loads ]",
+        6: "Summary of Inputs   [ Prints the summary of inputs ]"
     }
 
     create_view(
@@ -201,6 +210,7 @@ def main_menu():
         case '3': wind_module()
         case '4': seismic_module()
         case '5': snow_module()
+        case '6': summary_inputs()
         case _: code_setting()
 
 
@@ -214,8 +224,7 @@ def code_setting():
         1: "Select Building Code",
         2: "Select Occupancy Group",
         3: "Manually Set Risk Category",
-        4: "Input Building Geometry",
-        5: "Summary of Inputs"
+        4: "Input Building Geometry"
     }
 
     create_view(
@@ -245,8 +254,6 @@ def code_setting():
             manual_select_risk_category()
         case '4':
             input_building_geometry()
-        case '5':
-            summary_inputs()
         case _:
             select_building_code()
 
@@ -275,7 +282,7 @@ def select_building_code():
 
     choice = get_inp(1, len(option_str))
     global input_data
-    input_data["Building Code"] = option_str[int(choice)]
+    input_data["Code Setting"]["Building Code"] = option_str[int(choice)]
 
     confirm_selection(option_str[int(choice)], select_building_code,
                       select_occupancy_group)
@@ -290,7 +297,7 @@ def select_occupancy_group():
     global input_data
     global code_data
 
-    option_str = create_dict(code_data[input_data["Building Code"]][
+    option_str = create_dict(code_data[input_data["Code Setting"]["Building Code"]][
         "OccupancyGroups"])
 
     create_view(
@@ -303,7 +310,7 @@ def select_occupancy_group():
     print("*        - Go back to Code Settings\n")
 
     choice = get_inp(1, len(option_str))
-    input_data["Occupancy Group"] = option_str[int(choice)]
+    input_data["Code Setting"]["Occupancy Group"] = option_str[int(choice)]
 
     confirm_selection(option_str[int(choice)], select_occupancy_group,
                       input_building_geometry)
@@ -318,10 +325,10 @@ def manual_select_risk_category():
     global input_data
     global code_data
 
-    option_str = create_dict(code_data[input_data["Building Code"]][
+    option_str = create_dict(code_data[input_data["Code Setting"]["Building Code"]][
                                  "RiskCategories"])
 
-    if input_data["Occupancy Group"] == "":
+    if input_data["Code Setting"]["Occupancy Group"] == "":
         create_view(
             [
                 "SELECT RISK CATEGORIES",
@@ -329,8 +336,8 @@ def manual_select_risk_category():
             ], option_str
         )
     else:
-        risk_category = code_data[input_data["Building Code"]][
-                                 "OccupancyGroups"][input_data["Occupancy Group"]]
+        risk_category = code_data[input_data["Code Setting"]["Building Code"]][
+                                 "OccupancyGroups"][input_data["Code Setting"]["Occupancy Group"]]
         create_view(
             [
                 "SELECT RISK CATEGORIES",
@@ -343,7 +350,7 @@ def manual_select_risk_category():
     print("*        - Go back to Code Settings\n")
 
     choice = get_inp(1, len(option_str))
-    input_data["Risk Category"] = option_str[int(choice)]
+    input_data["Code Setting"]["Risk Category"] = option_str[int(choice)]
 
     confirm_selection(option_str[int(choice)], manual_select_risk_category,
                       input_building_geometry)
@@ -378,15 +385,15 @@ def input_building_geometry():
     for key, value in option_str.items():
         choice = get_inp(display=f"{key}. {value}: > ", input_typ=float,
                          is_range=False)
-        input_data[value] = choice
+        input_data["Code Setting"][value] = choice
 
     message = ""
     for key, value in option_str.items():
-        message += f"{value}: {input_data[value]}"
+        message += f"{value}: {input_data["Code Setting"][value]}"
         if value != "Mean Roof Height (ft)":
             message += "\n"
 
-    confirm_selection(message, input_building_geometry, summary_inputs)
+    confirm_selection(message, input_building_geometry, select_location)
 
 
 def summary_inputs():
@@ -397,20 +404,22 @@ def summary_inputs():
 
     global input_data
     print_data = {}
-    for index, (key, value) in enumerate(input_data.items()):
-        print_data[f"{index+1}. {key}"] = value
+    index = 0
+    for key, value in input_data.items():
+        for ckey, cvalue in value.items():
+            index += 1
+            print_data[f"{index}. {ckey}"] = cvalue
 
     create_view(
         [
             "SUMMARY OF INPUTS",
             "The loads will be generated as per below summarized inputs for the structure:"
-        ], print_data
+        ], print_data, is_summary=True
     )
 
     print("Please select an option: ")
-    print(f"1-{len(input_data)}: Edit that input")
-    print("*        - Go back to Code Settings")
-    print("**       - Go back to Main Menu")
+    print(f"1-{index}: Edit that input")
+    print("*       - Go back to Main Menu")
     print("Proceed to Wind, Seismic, or Snow Module once inputs are "
           "confirmed.\n")
 
@@ -425,8 +434,21 @@ def summary_inputs():
             manual_select_risk_category()
         case '4' | '5' | '6' | '7':
             input_building_geometry()
-        case _:
+        case '8' | '9' | '10':
             select_location()
+        case _:
+            main_menu()
+
+def write_json(filepath, data):
+    """
+
+    :param filepath:
+    :param data:
+    :return:
+    """
+
+    with open(filepath, 'w', encoding="utf-8") as fd:
+        json.dump(data, fd, indent=4)
 
 
 def select_location():
@@ -435,7 +457,61 @@ def select_location():
     :return:
     """
 
-    pass
+    global input_data
+    write_json("input_data.json", input_data)
+
+    option_str = {
+        1: "221 NE 122nd Avenue, Portland, OR 97230",
+        2: "Seattle, WA",
+    }
+
+    create_view(
+        [
+            "INPUT BUILDING LOCATION",
+            "You will be asked to provide the building address in any of the "
+            "following format: "
+        ], option_str
+    )
+
+    print("*        - Go back to Main Menu\n")
+
+    message = "Type building address or '*' to go back: > "
+    choice = get_inp(is_range=False, display=message, input_typ=str)
+    input_data["Select Location"]["Location"] = choice
+
+    confirm_selection(choice, select_location, get_lat_long, exception=True,
+                      efunction=get_lat_long)
+
+
+def get_lat_long():
+    """
+    Calls geo-locator api to get longitude and latitude
+    :return:
+    """
+
+    # Load the PORT from .env
+    load_dotenv()
+    port = os.getenv("GEOLOCATOR_PORT")
+
+    # Set up the socket
+    socket = setup_socket_client(port)
+
+    # Send location to geo-locator
+    send_message_str(socket, input_data["Select Location"]["Location"])
+
+    # Receive lat and long
+    message = recv_message_json(socket)
+
+    input_data["Select Location"]["Latitude"] = message["lat"]
+    input_data["Select Location"]["Longitude"] = message["lon"]
+
+    write_json("input_data.json", input_data)
+
+    global auto_step
+    if auto_step:
+        return wind_module()
+    else:
+        return page_history_stack.pop()()
 
 
 def wind_module():
@@ -474,6 +550,10 @@ def main():
     f_path = "code_data.json"
     global code_data
     code_data = process_json(f_path)
+
+    f_path = "input_data.json"
+    global input_data
+    input_data = process_json(f_path)
 
     main_menu()
 

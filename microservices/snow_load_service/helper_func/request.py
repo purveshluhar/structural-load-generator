@@ -2,7 +2,7 @@
 Main function to run the seismic_load_servie
 
 Includes:
-- run_service()
+- get_request()
 """
 
 import requests
