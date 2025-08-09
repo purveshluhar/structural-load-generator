@@ -1,0 +1,39 @@
+{
+    "Code Setting": {
+        "Building Code": "International Building Code 2021",
+        "Occupancy Group": "Group S (Storage)",
+        "Risk Category": "II",
+        "Roof Angle (deg)": 10.0,
+        "Building Length (ft)": 500.0,
+        "Least Width (ft)": 300.0,
+        "Mean Roof Height (ft)": 25.0,
+        "Project Name": "Burj"
+    },
+    "Select Location": {
+        "Location": "Manhattan, NY",
+        "Latitude": 40.789352,
+        "Longitude": -73.95709
+    },
+    "Wind Module": {
+        "Importance Factor": 1.0
+    },
+    "Snow Module": {
+        "Importance Factor": 1.0
+    },
+    "Seismic Module": {
+        "Seismic Resisting System": {
+            "Name": "building_frame_systems-Steel special plate shear walls",
+            "R": 7,
+            "Omega": 2,
+            "Cd": 6
+        },
+        "Site Class": "D",
+        "Weight (kips)": 600.0,
+        "Importance Factor": 1.0,
+        "V": 26.142857142857142,
+        "Ss": 0.292,
+        "S1": 0.06,
+        "Sds": 0.305,
+        "Sd1": 0.096
+    }
+}

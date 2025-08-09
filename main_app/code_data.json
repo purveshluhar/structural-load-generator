@@ -51,7 +51,8 @@
       }
     },
     "Seismic": {
-      "bearing_wall_systems": [
+      "Seismic Resisting System": {
+        "bearing_wall_systems": [
         {
           "id": 1,
           "name": "Special reinforced concrete shear walls",
@@ -216,512 +217,521 @@
         }
       ],
 
-      "building_frame_systems": [
-        {
-          "id": 1,
-          "name": "Steel eccentrically braced frames",
-          "section": "14.1",
-          "R": 8,
-          "Omega": 2,
-          "Cd": 4,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
-        },
-        {
-          "id": 2,
-          "name": "Steel special concentrically braced frames",
-          "section": "14.1",
-          "R": 6,
-          "Omega": 2,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
-        },
-        {
-          "id": 3,
-          "name": "Steel ordinary concentrically braced frames",
-          "section": "14.1",
-          "R": 3.25,
-          "Omega": 2,
-          "Cd": 3.25,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 35, "E": 35, "F": "NP" }
-        },
-        {
-          "id": 4,
-          "name": "Special reinforced concrete shear walls",
-          "section": "14.2",
-          "R": 6,
-          "Omega": 2.5,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
-        },
-        {
-          "id": 5,
-          "name": "Ordinary reinforced concrete shear walls",
-          "section": "14.2",
-          "R": 5,
-          "Omega": 2.5,
-          "Cd": 4.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 6,
-          "name": "Detailed plain concrete shear walls",
-          "section": "14.2 & 14.2.2.7",
-          "R": 2,
-          "Omega": 2.5,
-          "Cd": 2,
-          "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 7,
-          "name": "Ordinary plain concrete shear walls",
-          "section": "14.2",
-          "R": 1.5,
-          "Omega": 2.5,
-          "Cd": 1.5,
-          "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 8,
-          "name": "Intermediate precast shear walls",
-          "section": "14.2",
-          "R": 5,
-          "Omega": 2.5,
-          "Cd": 4.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 40, "E": 40, "F": 40 }
-        },
-        {
-          "id": 9,
-          "name": "Ordinary precast shear walls",
-          "section": "14.2",
-          "R": 4,
-          "Omega": 2.5,
-          "Cd": 4,
-          "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 10,
-          "name": "Steel and concrete composite eccentrically braced frames",
-          "section": "14.3",
-          "R": 8,
-          "Omega": 2.5,
-          "Cd": 4,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
-        },
-        {
-          "id": 11,
-          "name": "Steel and concrete composite special concentrically braced frames",
-          "section": "14.3",
-          "R": 5,
-          "Omega": 2,
-          "Cd": 4.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
-        },
-        {
-          "id": 12,
-          "name": "Steel and concrete composite ordinary braced frames",
-          "section": "14.3",
-          "R": 3,
-          "Omega": 2,
-          "Cd": 3,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 13,
-          "name": "Steel and concrete composite plate shear walls",
-          "section": "14.3",
-          "R": 6.5,
-          "Omega": 2.5,
-          "Cd": 5.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
-        },
-        {
-          "id": 14,
-          "name": "Steel and concrete composite special shear walls",
-          "section": "14.3",
-          "R": 6,
-          "Omega": 2.5,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
-        },
-        {
-          "id": 15,
-          "name": "Steel and concrete composite ordinary shear walls",
-          "section": "14.3",
-          "R": 5,
-          "Omega": 2.5,
-          "Cd": 4.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 16,
-          "name": "Special reinforced masonry shear walls",
-          "section": "14.4",
-          "R": 5.5,
-          "Omega": 2.5,
-          "Cd": 4,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
-        },
-        {
-          "id": 17,
-          "name": "Intermediate reinforced masonry shear walls",
-          "section": "14.4",
-          "R": 4,
-          "Omega": 2.5,
-          "Cd": 4,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 18,
-          "name": "Ordinary reinforced masonry shear walls",
-          "section": "14.4",
-          "R": 2,
-          "Omega": 2.5,
-          "Cd": 2,
-          "limits_ft": { "B": "NL", "C": 160, "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 19,
-          "name": "Detailed plain masonry shear walls",
-          "section": "14.4",
-          "R": 2,
-          "Omega": 2.5,
-          "Cd": 2,
-          "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 20,
-          "name": "Ordinary plain masonry shear walls",
-          "section": "14.4",
-          "R": 1.5,
-          "Omega": 2.5,
-          "Cd": 1.25,
-          "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 21,
-          "name": "Prestressed masonry shear walls",
-          "section": "14.4",
-          "R": 1.5,
-          "Omega": 2.5,
-          "Cd": 1.75,
-          "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 22,
-          "name": "Light-frame (wood) walls sheathed with panels",
-          "section": "14.5",
-          "R": 7,
-          "Omega": 2.5,
-          "Cd": 4.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 65, "E": 65, "F": 65 }
-        },
-        {
-          "id": 23,
-          "name": "Light-frame (cold-formed steel) walls sheathed with panels",
-          "section": "14.1",
-          "R": 7,
-          "Omega": 2.5,
-          "Cd": 4.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 65, "E": 65, "F": 65 }
-        },
-        {
-          "id": 24,
-          "name": "Light-frame walls with shear panels of other materials",
-          "section": "14.1 & 14.5",
-          "R": 2.5,
-          "Omega": 2.5,
-          "Cd": 2.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 35, "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 25,
-          "name": "Steel buckling-restrained braced frames",
-          "section": "14.1",
-          "R": 8,
-          "Omega": 2.5,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
-        },
-        {
-          "id": 26,
-          "name": "Steel special plate shear walls",
-          "section": "14.1",
-          "R": 7,
-          "Omega": 2,
-          "Cd": 6,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
-        }
-      ],
+        "building_frame_systems": [
+          {
+            "id": 1,
+            "name": "Steel eccentrically braced frames",
+            "section": "14.1",
+            "R": 8,
+            "Omega": 2,
+            "Cd": 4,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
+          },
+          {
+            "id": 2,
+            "name": "Steel special concentrically braced frames",
+            "section": "14.1",
+            "R": 6,
+            "Omega": 2,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
+          },
+          {
+            "id": 3,
+            "name": "Steel ordinary concentrically braced frames",
+            "section": "14.1",
+            "R": 3.25,
+            "Omega": 2,
+            "Cd": 3.25,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 35, "E": 35, "F": "NP" }
+          },
+          {
+            "id": 4,
+            "name": "Special reinforced concrete shear walls",
+            "section": "14.2",
+            "R": 6,
+            "Omega": 2.5,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
+          },
+          {
+            "id": 5,
+            "name": "Ordinary reinforced concrete shear walls",
+            "section": "14.2",
+            "R": 5,
+            "Omega": 2.5,
+            "Cd": 4.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 6,
+            "name": "Detailed plain concrete shear walls",
+            "section": "14.2 & 14.2.2.7",
+            "R": 2,
+            "Omega": 2.5,
+            "Cd": 2,
+            "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 7,
+            "name": "Ordinary plain concrete shear walls",
+            "section": "14.2",
+            "R": 1.5,
+            "Omega": 2.5,
+            "Cd": 1.5,
+            "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 8,
+            "name": "Intermediate precast shear walls",
+            "section": "14.2",
+            "R": 5,
+            "Omega": 2.5,
+            "Cd": 4.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 40, "E": 40, "F": 40 }
+          },
+          {
+            "id": 9,
+            "name": "Ordinary precast shear walls",
+            "section": "14.2",
+            "R": 4,
+            "Omega": 2.5,
+            "Cd": 4,
+            "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 10,
+            "name": "Steel and concrete composite eccentrically braced frames",
+            "section": "14.3",
+            "R": 8,
+            "Omega": 2.5,
+            "Cd": 4,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
+          },
+          {
+            "id": 11,
+            "name": "Steel and concrete composite special concentrically braced frames",
+            "section": "14.3",
+            "R": 5,
+            "Omega": 2,
+            "Cd": 4.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
+          },
+          {
+            "id": 12,
+            "name": "Steel and concrete composite ordinary braced frames",
+            "section": "14.3",
+            "R": 3,
+            "Omega": 2,
+            "Cd": 3,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 13,
+            "name": "Steel and concrete composite plate shear walls",
+            "section": "14.3",
+            "R": 6.5,
+            "Omega": 2.5,
+            "Cd": 5.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
+          },
+          {
+            "id": 14,
+            "name": "Steel and concrete composite special shear walls",
+            "section": "14.3",
+            "R": 6,
+            "Omega": 2.5,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
+          },
+          {
+            "id": 15,
+            "name": "Steel and concrete composite ordinary shear walls",
+            "section": "14.3",
+            "R": 5,
+            "Omega": 2.5,
+            "Cd": 4.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 16,
+            "name": "Special reinforced masonry shear walls",
+            "section": "14.4",
+            "R": 5.5,
+            "Omega": 2.5,
+            "Cd": 4,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
+          },
+          {
+            "id": 17,
+            "name": "Intermediate reinforced masonry shear walls",
+            "section": "14.4",
+            "R": 4,
+            "Omega": 2.5,
+            "Cd": 4,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 18,
+            "name": "Ordinary reinforced masonry shear walls",
+            "section": "14.4",
+            "R": 2,
+            "Omega": 2.5,
+            "Cd": 2,
+            "limits_ft": { "B": "NL", "C": 160, "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 19,
+            "name": "Detailed plain masonry shear walls",
+            "section": "14.4",
+            "R": 2,
+            "Omega": 2.5,
+            "Cd": 2,
+            "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 20,
+            "name": "Ordinary plain masonry shear walls",
+            "section": "14.4",
+            "R": 1.5,
+            "Omega": 2.5,
+            "Cd": 1.25,
+            "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 21,
+            "name": "Prestressed masonry shear walls",
+            "section": "14.4",
+            "R": 1.5,
+            "Omega": 2.5,
+            "Cd": 1.75,
+            "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 22,
+            "name": "Light-frame (wood) walls sheathed with panels",
+            "section": "14.5",
+            "R": 7,
+            "Omega": 2.5,
+            "Cd": 4.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 65, "E": 65, "F": 65 }
+          },
+          {
+            "id": 23,
+            "name": "Light-frame (cold-formed steel) walls sheathed with panels",
+            "section": "14.1",
+            "R": 7,
+            "Omega": 2.5,
+            "Cd": 4.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 65, "E": 65, "F": 65 }
+          },
+          {
+            "id": 24,
+            "name": "Light-frame walls with shear panels of other materials",
+            "section": "14.1 & 14.5",
+            "R": 2.5,
+            "Omega": 2.5,
+            "Cd": 2.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 35, "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 25,
+            "name": "Steel buckling-restrained braced frames",
+            "section": "14.1",
+            "R": 8,
+            "Omega": 2.5,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
+          },
+          {
+            "id": 26,
+            "name": "Steel special plate shear walls",
+            "section": "14.1",
+            "R": 7,
+            "Omega": 2,
+            "Cd": 6,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 160, "F": 100 }
+          }
+        ],
 
-      "moment_resisting_frame_systems": [
-        {
-          "id": 1,
-          "name": "Steel special moment frames",
-          "section": "12.2.5.5 & 14.1",
-          "R": 8,
-          "Omega": 3,
-          "Cd": 5.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 2,
-          "name": "Steel special truss moment frames",
-          "section": "14.1",
-          "R": 7,
-          "Omega": 3,
-          "Cd": 5.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 100, "F": "NP" }
-        },
-        {
-          "id": 3,
-          "name": "Steel intermediate moment frames",
-          "section": "12.2.5.7 & 14.1",
-          "R": 4.5,
-          "Omega": 3,
-          "Cd": 4,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 35, "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 4,
-          "name": "Steel ordinary moment frames",
-          "section": "12.2.5.6 & 14.1",
-          "R": 3.5,
-          "Omega": 3,
-          "Cd": 3,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 5,
-          "name": "Special reinforced concrete moment frames",
-          "section": "12.2.5.5 & 14.2",
-          "R": 8,
-          "Omega": 3,
-          "Cd": 5.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 6,
-          "name": "Intermediate reinforced concrete moment frames",
-          "section": "14.2",
-          "R": 5,
-          "Omega": 3,
-          "Cd": 4.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 7,
-          "name": "Ordinary reinforced concrete moment frames",
-          "section": "14.2",
-          "R": 3,
-          "Omega": 3,
-          "Cd": 2.5,
-          "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 8,
-          "name": "Steel & concrete composite special moment frames",
-          "section": "12.2.5.5 & 14.3",
-          "R": 8,
-          "Omega": 3,
-          "Cd": 5.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 9,
-          "name": "Steel & concrete composite intermediate moment frames",
-          "section": "14.3",
-          "R": 5,
-          "Omega": 3,
-          "Cd": 4.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 10,
-          "name": "Steel & concrete composite partially restrained moment frames",
-          "section": "14.3",
-          "R": 6,
-          "Omega": 3,
-          "Cd": 5,
-          "limits_ft": { "B": 160, "C": 160, "D": 100, "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 11,
-          "name": "Steel & concrete composite ordinary moment frames",
-          "section": "14.3",
-          "R": 3,
-          "Omega": 3,
-          "Cd": 2.5,
-          "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 12,
-          "name": "Cold-formed steel—special bolted moment frame",
-          "section": "14.1",
-          "R": 3.5,
-          "Omega": 3,
-          "Cd": 3.5,
-          "limits_ft": { "B": 35, "C": 35, "D": 35, "E": 35, "F": 35 }
-        }
-      ],
+        "moment_resisting_frame_systems": [
+          {
+            "id": 1,
+            "name": "Steel special moment frames",
+            "section": "12.2.5.5 & 14.1",
+            "R": 8,
+            "Omega": 3,
+            "Cd": 5.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 2,
+            "name": "Steel special truss moment frames",
+            "section": "14.1",
+            "R": 7,
+            "Omega": 3,
+            "Cd": 5.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 100, "F": "NP" }
+          },
+          {
+            "id": 3,
+            "name": "Steel intermediate moment frames",
+            "section": "12.2.5.7 & 14.1",
+            "R": 4.5,
+            "Omega": 3,
+            "Cd": 4,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 35, "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 4,
+            "name": "Steel ordinary moment frames",
+            "section": "12.2.5.6 & 14.1",
+            "R": 3.5,
+            "Omega": 3,
+            "Cd": 3,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 5,
+            "name": "Special reinforced concrete moment frames",
+            "section": "12.2.5.5 & 14.2",
+            "R": 8,
+            "Omega": 3,
+            "Cd": 5.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 6,
+            "name": "Intermediate reinforced concrete moment frames",
+            "section": "14.2",
+            "R": 5,
+            "Omega": 3,
+            "Cd": 4.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 7,
+            "name": "Ordinary reinforced concrete moment frames",
+            "section": "14.2",
+            "R": 3,
+            "Omega": 3,
+            "Cd": 2.5,
+            "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 8,
+            "name": "Steel & concrete composite special moment frames",
+            "section": "12.2.5.5 & 14.3",
+            "R": 8,
+            "Omega": 3,
+            "Cd": 5.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 9,
+            "name": "Steel & concrete composite intermediate moment frames",
+            "section": "14.3",
+            "R": 5,
+            "Omega": 3,
+            "Cd": 4.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 10,
+            "name": "Steel & concrete composite partially restrained moment frames",
+            "section": "14.3",
+            "R": 6,
+            "Omega": 3,
+            "Cd": 5,
+            "limits_ft": { "B": 160, "C": 160, "D": 100, "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 11,
+            "name": "Steel & concrete composite ordinary moment frames",
+            "section": "14.3",
+            "R": 3,
+            "Omega": 3,
+            "Cd": 2.5,
+            "limits_ft": { "B": "NL", "C": "NP", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 12,
+            "name": "Cold-formed steel—special bolted moment frame",
+            "section": "14.1",
+            "R": 3.5,
+            "Omega": 3,
+            "Cd": 3.5,
+            "limits_ft": { "B": 35, "C": 35, "D": 35, "E": 35, "F": 35 }
+          }
+        ],
 
-      "dual_systems_special_moment_frames": [
-        {
-          "id": 1,
-          "name": "Steel eccentrically braced frames",
-          "section": "14.1 & 12.2.5.1",
-          "R": 8,
-          "Omega": 2.5,
-          "Cd": 4,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 2,
-          "name": "Steel special concentrically braced frames",
-          "section": "14.1",
-          "R": 7,
-          "Omega": 2.5,
-          "Cd": 5.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 3,
-          "name": "Special reinforced concrete shear walls",
-          "section": "14.2 & 12.2.5.1",
-          "R": 7,
-          "Omega": 2.5,
-          "Cd": 5.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 4,
-          "name": "Ordinary reinforced concrete shear walls",
-          "section": "14.2",
-          "R": 6,
-          "Omega": 2.5,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 5,
-          "name": "Steel & concrete composite eccentrically braced frames",
-          "section": "14.3",
-          "R": 8,
-          "Omega": 2.5,
-          "Cd": 4,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 6,
-          "name": "Steel & concrete composite special concentrically braced frames",
-          "section": "14.3",
-          "R": 6,
-          "Omega": 2.5,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 7,
-          "name": "Steel & concrete composite plate shear walls",
-          "section": "14.3",
-          "R": 7.5,
-          "Omega": 2.5,
-          "Cd": 6,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 8,
-          "name": "Steel & concrete composite special shear walls",
-          "section": "14.3",
-          "R": 7,
-          "Omega": 2.5,
-          "Cd": 6,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 9,
-          "name": "Steel & concrete composite ordinary shear walls",
-          "section": "14.3",
-          "R": 6,
-          "Omega": 2.5,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 10,
-          "name": "Special reinforced masonry shear walls",
-          "section": "14.4",
-          "R": 5.5,
-          "Omega": 3,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 11,
-          "name": "Intermediate reinforced masonry shear walls",
-          "section": "14.4",
-          "R": 4,
-          "Omega": 3,
-          "Cd": 3.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 12,
-          "name": "Buckling-restrained braced frames",
-          "section": "14.1",
-          "R": 8,
-          "Omega": 2.5,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        },
-        {
-          "id": 13,
-          "name": "Steel special plate shear walls",
-          "section": "14.1",
-          "R": 8,
-          "Omega": 2.5,
-          "Cd": 6.5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
-        }
-      ],
+        "dual_systems_special_moment_frames": [
+          {
+            "id": 1,
+            "name": "Steel eccentrically braced frames",
+            "section": "14.1 & 12.2.5.1",
+            "R": 8,
+            "Omega": 2.5,
+            "Cd": 4,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 2,
+            "name": "Steel special concentrically braced frames",
+            "section": "14.1",
+            "R": 7,
+            "Omega": 2.5,
+            "Cd": 5.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 3,
+            "name": "Special reinforced concrete shear walls",
+            "section": "14.2 & 12.2.5.1",
+            "R": 7,
+            "Omega": 2.5,
+            "Cd": 5.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 4,
+            "name": "Ordinary reinforced concrete shear walls",
+            "section": "14.2",
+            "R": 6,
+            "Omega": 2.5,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 5,
+            "name": "Steel & concrete composite eccentrically braced frames",
+            "section": "14.3",
+            "R": 8,
+            "Omega": 2.5,
+            "Cd": 4,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 6,
+            "name": "Steel & concrete composite special concentrically braced frames",
+            "section": "14.3",
+            "R": 6,
+            "Omega": 2.5,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 7,
+            "name": "Steel & concrete composite plate shear walls",
+            "section": "14.3",
+            "R": 7.5,
+            "Omega": 2.5,
+            "Cd": 6,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 8,
+            "name": "Steel & concrete composite special shear walls",
+            "section": "14.3",
+            "R": 7,
+            "Omega": 2.5,
+            "Cd": 6,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 9,
+            "name": "Steel & concrete composite ordinary shear walls",
+            "section": "14.3",
+            "R": 6,
+            "Omega": 2.5,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 10,
+            "name": "Special reinforced masonry shear walls",
+            "section": "14.4",
+            "R": 5.5,
+            "Omega": 3,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 11,
+            "name": "Intermediate reinforced masonry shear walls",
+            "section": "14.4",
+            "R": 4,
+            "Omega": 3,
+            "Cd": 3.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 12,
+            "name": "Buckling-restrained braced frames",
+            "section": "14.1",
+            "R": 8,
+            "Omega": 2.5,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          },
+          {
+            "id": 13,
+            "name": "Steel special plate shear walls",
+            "section": "14.1",
+            "R": 8,
+            "Omega": 2.5,
+            "Cd": 6.5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NL", "E": "NL", "F": "NL" }
+          }
+        ],
 
-      "dual_systems_intermediate_moment_frames": [
-        {
-          "id": 1,
-          "name": "Steel special concentrically braced frames",
-          "section": "14.1",
-          "R": 6,
-          "Omega": 2.5,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 35, "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 2,
-          "name": "Special reinforced concrete shear walls",
-          "section": "14.2",
-          "R": 6.5,
-          "Omega": 2.5,
-          "Cd": 5,
-          "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 100, "F": 100 }
-        },
-        {
-          "id": 3,
-          "name": "Ordinary reinforced masonry shear walls",
-          "section": "14.4",
-          "R": 3,
-          "Omega": 3,
-          "Cd": 2.5,
-          "limits_ft": { "B": "NL", "C": 160, "D": "NP", "E": "NP", "F": "NP" }
-        },
-        {
-          "id": 4,
-          "name": "Intermediate reinforced masonry shear walls",
-          "section": "14.4",
-          "R": 3.5,
-          "Omega": 3,
-          "Cd": 3,
-          "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
-        }
-      ]
+        "dual_systems_intermediate_moment_frames": [
+          {
+            "id": 1,
+            "name": "Steel special concentrically braced frames",
+            "section": "14.1",
+            "R": 6,
+            "Omega": 2.5,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 35, "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 2,
+            "name": "Special reinforced concrete shear walls",
+            "section": "14.2",
+            "R": 6.5,
+            "Omega": 2.5,
+            "Cd": 5,
+            "limits_ft": { "B": "NL", "C": "NL", "D": 160, "E": 100, "F": 100 }
+          },
+          {
+            "id": 3,
+            "name": "Ordinary reinforced masonry shear walls",
+            "section": "14.4",
+            "R": 3,
+            "Omega": 3,
+            "Cd": 2.5,
+            "limits_ft": { "B": "NL", "C": 160, "D": "NP", "E": "NP", "F": "NP" }
+          },
+          {
+            "id": 4,
+            "name": "Intermediate reinforced masonry shear walls",
+            "section": "14.4",
+            "R": 3.5,
+            "Omega": 3,
+            "Cd": 3,
+            "limits_ft": { "B": "NL", "C": "NL", "D": "NP", "E": "NP", "F": "NP" }
+          }
+        ]
+      },
+      "Site Class": {
+        "Hard Rock": "A",
+        "Medium hard rock": "B",
+        "Very dense sand or hard clay": "C",
+        "Medium dense sand/stiff clay": "D",
+        "Very loose sand or soft clay": "E",
+        "Soils requiring site-specific evaluation (see code for exceptions)": "F"
+      }
     }
   },
   "International Building Code 2018": {

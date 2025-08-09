@@ -14,6 +14,8 @@ page_history_stack: list[Callable] = [exit]
 input_data = {}
 # Global variable to store code_data
 code_data = {}
+# Global variable to store summary data
+summary_data = {}
 
 def process_json(f_path, mode='r'):
     """
@@ -29,6 +31,21 @@ def process_json(f_path, mode='r'):
 
     return data
 
+
+def clear_JSON_data(data):
+    """
+    To clear existing data in a dictionary
+    :param data: dict
+    :return:
+    """
+
+    for key, value in data.items():
+        if type(value) is dict:
+            clear_JSON_data(value)
+        else:
+            data[key] = ""
+
+    return data
 
 def create_dict(data:dict):
     """
@@ -116,6 +133,11 @@ def get_inp(min_num=0, max_num=0, is_main=False, invalid=False,
         if "*" in choice:
             call_func = ()
             for i in range(choice.count("*")):
+                if page_history_stack[-1] == exit:
+                    # Store the input_data before exiting
+                    write_json("input_data.json", input_data)
+                    write_json("summary_data.json", summary_data)
+
                 call_func = page_history_stack.pop()
 
             return call_func()
@@ -146,8 +168,8 @@ def get_inp(min_num=0, max_num=0, is_main=False, invalid=False,
     return ""
 
 
-def confirm_selection(selection, call_function, next_function,
-                      exception=False, efunction=()):
+def confirm_selection(selection, call_function, next_function=(),
+                      exception=False):
     """
     Function to view the confirmation selection of the input made
     :return: integer
@@ -167,7 +189,7 @@ def confirm_selection(selection, call_function, next_function,
     if auto_step:
         return next_function()
     elif exception:
-        return efunction()
+        return 0
     else:
         return page_history_stack.pop()()
 
@@ -264,12 +286,11 @@ def select_building_code():
     :return:
     """
 
-    option_str = {
-        1: "International Building Code 2021",
-        2: "International Building Code 2018",
-        3: "ASCE 7-16",
-        4: "Unified Facilities Criteria"
-    }
+    global code_data
+    global input_data
+    global summary_data
+
+    option_str = create_dict(code_data)
 
     create_view(
         [
@@ -281,8 +302,9 @@ def select_building_code():
     print("*        - Go back to Code Settings\n")
 
     choice = get_inp(1, len(option_str))
-    global input_data
-    input_data["Code Setting"]["Building Code"] = option_str[int(choice)]
+    building_code = option_str[int(choice)]
+    input_data["Code Setting"]["Building Code"] = building_code
+    summary_data["Code Setting"]["Building Code"] = building_code
 
     confirm_selection(option_str[int(choice)], select_building_code,
                       select_occupancy_group)
@@ -294,11 +316,12 @@ def select_occupancy_group():
     :return:
     """
 
-    global input_data
     global code_data
+    global summary_data
+    global input_data
 
-    option_str = create_dict(code_data[input_data["Code Setting"]["Building Code"]][
-        "OccupancyGroups"])
+    building_code = summary_data["Code Setting"]["Building Code"]
+    option_str = create_dict(code_data[building_code]["OccupancyGroups"])
 
     create_view(
         [
@@ -310,9 +333,22 @@ def select_occupancy_group():
     print("*        - Go back to Code Settings\n")
 
     choice = get_inp(1, len(option_str))
-    input_data["Code Setting"]["Occupancy Group"] = option_str[int(choice)]
+    occupancy_group = option_str[int(choice)]
+    risk_category = code_data[building_code]["OccupancyGroups"][option_str[
+        int(choice)]]
 
-    confirm_selection(option_str[int(choice)], select_occupancy_group,
+    input_data["Code Setting"]["Occupancy Group"] = occupancy_group
+    input_data["Code Setting"]["Risk Category"] = risk_category
+    summary_data["Code Setting"]["Occupancy Group"] = occupancy_group
+    summary_data["Code Setting"]["Risk Category"] = risk_category
+
+    # Add Importance Factor as per risk category
+    arr = ["Wind", "Seismic", "Snow"]
+    for item in arr:
+        summary_data[f"{item} Module"]["Importance Factor"] = code_data[
+            building_code]["RiskCategories"][risk_category][item]
+
+    confirm_selection(occupancy_group, select_occupancy_group,
                       input_building_geometry)
 
 
@@ -322,13 +358,14 @@ def manual_select_risk_category():
     :return:
     """
 
-    global input_data
+    global summary_data
     global code_data
+    global input_data
 
-    option_str = create_dict(code_data[input_data["Code Setting"]["Building Code"]][
-                                 "RiskCategories"])
+    building_code = summary_data["Code Setting"]["Building Code"]
+    option_str = create_dict(code_data[building_code]["RiskCategories"])
 
-    if input_data["Code Setting"]["Occupancy Group"] == "":
+    if summary_data["Code Setting"]["Occupancy Group"] == "":
         create_view(
             [
                 "SELECT RISK CATEGORIES",
@@ -336,8 +373,7 @@ def manual_select_risk_category():
             ], option_str
         )
     else:
-        risk_category = code_data[input_data["Code Setting"]["Building Code"]][
-                                 "OccupancyGroups"][input_data["Code Setting"]["Occupancy Group"]]
+        risk_category = summary_data["Code Setting"]["Risk Category"]
         create_view(
             [
                 "SELECT RISK CATEGORIES",
@@ -350,9 +386,17 @@ def manual_select_risk_category():
     print("*        - Go back to Code Settings\n")
 
     choice = get_inp(1, len(option_str))
-    input_data["Code Setting"]["Risk Category"] = option_str[int(choice)]
+    risk_category = option_str[int(choice)]
+    input_data["Code Setting"]["Risk Category"] = risk_category
+    summary_data["Code Setting"]["Risk Category"] = risk_category
 
-    confirm_selection(option_str[int(choice)], manual_select_risk_category,
+    # Add Importance Factor as per risk category to summary
+    arr = ["Wind", "Seismic", "Snow"]
+    for item in arr:
+        summary_data[f"{item} Module"]["Importance Factor"] = code_data[
+            building_code]["RiskCategories"][risk_category][item]
+
+    confirm_selection(risk_category, manual_select_risk_category,
                       input_building_geometry)
 
 
@@ -362,12 +406,15 @@ def input_building_geometry():
     :return:
     """
 
+    global summary_data
     global input_data
+
     option_str = {
         1: "Roof Angle (deg)",
         2: "Building Length (ft)",
         3: "Least Width (ft)",
-        4: "Mean Roof Height (ft)"
+        4: "Mean Roof Height (ft)",
+        5: "Project Name"
     }
 
     create_view(
@@ -383,14 +430,19 @@ def input_building_geometry():
     message = "Type 'start' to begin or '*' to go back: > "
     get_inp(is_range=False, display=message, input_typ=str)
     for key, value in option_str.items():
-        choice = get_inp(display=f"{key}. {value}: > ", input_typ=float,
+        if value == "Project Name":
+            choice = get_inp(display=f"{key}. {value}: > ", input_typ=str,
+                             is_range=False)
+        else:
+            choice = get_inp(display=f"{key}. {value}: > ", input_typ=float,
                          is_range=False)
         input_data["Code Setting"][value] = choice
+        summary_data["Code Setting"][value] = choice
 
     message = ""
-    for key, value in option_str.items():
-        message += f"{value}: {input_data["Code Setting"][value]}"
-        if value != "Mean Roof Height (ft)":
+    for index, (key, value) in enumerate(option_str.items()):
+        message += f"{value}: {summary_data["Code Setting"][value]}"
+        if index+1 != len(option_str):
             message += "\n"
 
     confirm_selection(message, input_building_geometry, select_location)
@@ -403,6 +455,7 @@ def summary_inputs():
     """
 
     global input_data
+
     print_data = {}
     index = 0
     for key, value in input_data.items():
@@ -458,7 +511,7 @@ def select_location():
     """
 
     global input_data
-    write_json("input_data.json", input_data)
+    global summary_data
 
     option_str = {
         1: "221 NE 122nd Avenue, Portland, OR 97230",
@@ -478,9 +531,10 @@ def select_location():
     message = "Type building address or '*' to go back: > "
     choice = get_inp(is_range=False, display=message, input_typ=str)
     input_data["Select Location"]["Location"] = choice
+    summary_data["Select Location"]["Location"] = choice
 
-    confirm_selection(choice, select_location, get_lat_long, exception=True,
-                      efunction=get_lat_long)
+    confirm_selection(choice, select_location, exception=True)
+    get_lat_long()
 
 
 def get_lat_long():
@@ -488,6 +542,9 @@ def get_lat_long():
     Calls geo-locator api to get longitude and latitude
     :return:
     """
+
+    global input_data
+    global summary_data
 
     # Load the PORT from .env
     load_dotenv()
@@ -502,10 +559,8 @@ def get_lat_long():
     # Receive lat and long
     message = recv_message_json(socket)
 
-    input_data["Select Location"]["Latitude"] = message["lat"]
-    input_data["Select Location"]["Longitude"] = message["lon"]
-
-    write_json("input_data.json", input_data)
+    summary_data["Select Location"]["Latitude"] = message["lat"]
+    summary_data["Select Location"]["Longitude"] = message["lon"]
 
     global auto_step
     if auto_step:
@@ -529,7 +584,129 @@ def seismic_module():
     :return:
     """
 
-    pass
+    global input_data
+
+    option_str = create_dict(input_data["Seismic Module"])
+
+    create_view(
+        [
+            "SEISMIC MODULE",
+            "You will be asked to provide the following: "
+        ], option_str
+    )
+
+    print("start    - To begin input")
+    print("*        - Go back to Code Settings\n")
+
+    message = "Type 'start' to begin or '*' to go back: > "
+    get_inp(is_range=False, display=message, input_typ=str)
+
+    get_seismic_inputs()
+    get_seismic_load()
+
+def get_seismic_inputs():
+    """
+    Gets site class and seismic force resisting system from the user
+    :return:
+    """
+
+    global input_data
+    global summary_data
+
+    option_str = create_dict(input_data["Seismic Module"])
+    building_code = summary_data["Code Setting"]["Building Code"]
+
+    for key, value in option_str.items():
+        print(f"\nSelect the {value}: ")
+        if value == "Seismic Resisting System":
+            srs_dict = {}
+            index = 0
+            for ckey, cvalue in code_data[building_code]["Seismic"][
+                value].items():
+                for item in cvalue:
+                    index += 1
+                    srs_dict[index] = {
+                        "Name": f"{ckey}-{item['name']}",
+                        "R": item["R"],
+                        "Omega": item["Omega"],
+                        "Cd": item["Cd"]
+                    }
+                    print(f"{index}. {ckey}-{item['name']}")
+
+            choice = get_inp(1, index)
+            input_data["Seismic Module"][value] = srs_dict[int(choice)]['Name']
+            summary_data["Seismic Module"][value] = srs_dict[int(choice)]
+        elif "Weight" in value:
+            choice = get_inp(display=f"{key}. {value}: > ", input_typ=float,
+                             is_range=False)
+            input_data["Seismic Module"][value] = choice
+            summary_data["Seismic Module"][value] = choice
+        else:
+            sub_menu = create_dict(code_data[building_code]["Seismic"][value])
+            for index, (ckey, cvalue) in enumerate(sub_menu.items()):
+                print(f"{index+1}. {cvalue}")
+
+            choice = get_inp(1, len(sub_menu))
+            site_class = code_data[building_code]["Seismic"]["Site Class"][
+                sub_menu[int(choice)]]
+            input_data["Seismic Module"][value] = site_class
+            summary_data["Seismic Module"][value] = site_class
+
+    message = ""
+    for index, (key, value) in enumerate(option_str.items()):
+        p_val = input_data['Seismic Module'][value]
+        message += f"{value}: {p_val}"
+        if index+1 != len(option_str):
+            message += "\n"
+
+    confirm_selection(message, seismic_module, exception=True)
+    return
+
+
+def get_seismic_load():
+    """
+    Calls seismic microservice to get seismic loads
+    :return:
+    """
+
+    global summary_data
+    global input_data
+
+    # Load the PORT from .env
+    load_dotenv()
+    port = os.getenv("SEISMIC_PORT")
+
+    # Set up the socket
+    socket = setup_socket_client(port)
+
+    req_data = {
+        "latitude": summary_data["Select Location"]["Latitude"],
+        "longitude": summary_data["Select Location"]["Longitude"],
+        "riskCategory": summary_data["Code Setting"]["Risk Category"],
+        "siteClass": summary_data["Seismic Module"]["Site Class"],
+        "title": summary_data["Code Setting"]["Project Name"],
+        "R": summary_data["Seismic Module"]["Seismic Resisting System"]["R"],
+        "I": summary_data["Seismic Module"]["Importance Factor"],
+        "W": summary_data["Seismic Module"]["Weight (kips)"],
+        "Building Code": summary_data["Code Setting"]["Building Code"]
+    }
+
+    # Send location to geo-locator
+    send_message_json(socket, req_data)
+
+    # Receive seismic load and spectrum value
+    message = recv_message_json(socket)
+
+    for key, item in message.items():
+        if "Error" in key:
+            break
+        summary_data["Seismic Module"][key] = item
+
+    global auto_step
+    if auto_step:
+        return snow_module()
+    else:
+        return page_history_stack.pop()()
 
 
 def snow_module():
@@ -554,6 +731,14 @@ def main():
     f_path = "input_data.json"
     global input_data
     input_data = process_json(f_path)
+
+    clear_JSON_data(input_data)
+
+    f_path = "summary_data.json"
+    global summary_data
+    summary_data = process_json(f_path)
+
+    clear_JSON_data(summary_data)
 
     main_menu()
 

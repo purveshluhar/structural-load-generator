@@ -1,19 +1,22 @@
 {
     "Code Setting": {
         "Building Code": "International Building Code 2021",
-        "Occupancy Group": "",
-        "Risk Category": "",
-        "Roof Angle (deg)": "",
-        "Building Length (ft)": "",
-        "Least Width (ft)": "",
-        "Mean Roof Height (ft)": ""
+        "Occupancy Group": "Group S (Storage)",
+        "Risk Category": "II",
+        "Roof Angle (deg)": 10.0,
+        "Building Length (ft)": 500.0,
+        "Least Width (ft)": 300.0,
+        "Mean Roof Height (ft)": 25.0,
+        "Project Name": "Burj"
     },
     "Select Location": {
-        "Location": "1305 Dexter Ave N, Seattle, WA 98109",
-        "Latitude": 47.630852,
-        "Longitude": -122.342555
+        "Location": "Manhattan, NY"
     },
     "Wind Module": {},
     "Snow Module": {},
-    "Seismic Module": {}
+    "Seismic Module": {
+        "Seismic Resisting System": "building_frame_systems-Steel special plate shear walls",
+        "Site Class": "D",
+        "Weight (kips)": 600.0
+    }
 }

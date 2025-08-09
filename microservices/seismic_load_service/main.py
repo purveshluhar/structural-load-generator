@@ -13,6 +13,8 @@ from helper_func.socket_handler import (setup_socket_server,
 from helper_func.check_data import check_data
 from helper_func.simple_eval import formula_eval
 import json
+import sys
+
 
 def run_service():
     """
@@ -75,7 +77,11 @@ def run_service():
 
         # Send calculated load to client
         send_message_json(socket, {
-            "V": r
+            "V": r,
+            "Ss": api_data["response"]["data"]["ss"],
+            "S1": api_data["response"]["data"]["s1"],
+            "Sds": api_data["response"]["data"]["sds"],
+            "Sd1": api_data["response"]["data"]["sd1"]
         })
 
 
