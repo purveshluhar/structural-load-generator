@@ -1,16 +1,16 @@
 {
     "Code Setting": {
-        "Building Code": "International Building Code 2018",
-        "Occupancy Group": "Essential facilities (fire, police, EMS, designated shelters, emergency ops centers)",
-        "Risk Category": "IV",
+        "Building Code": "International Building Code 2021",
+        "Occupancy Group": "Group E (Education) \u2013 occupant load \u2264 250",
+        "Risk Category": "II",
         "Roof Angle (deg)": 10.0,
         "Building Length (ft)": 5000.0,
         "Least Width (ft)": 2000.0,
-        "Mean Roof Height (ft)": 500.0,
+        "Mean Roof Height (ft)": 100.0,
         "Project Name": "Burj Al"
     },
     "Select Location": {
-        "Location": "Boise, UT"
+        "Location": "Portland, OR"
     },
     "Wind Module": {
         "Exposure Category": "B",
@@ -23,8 +23,8 @@
         "Exposure Factor (Ce)": 0.9
     },
     "Seismic Module": {
-        "Seismic Resisting System": "moment_resisting_frame_systems-Steel special moment frames",
+        "Seismic Resisting System": "building_frame_systems-Steel and concrete composite ordinary braced frames",
         "Site Class": "D",
-        "Weight (kips)": 500000.0
+        "Weight (kips)": 50000.0
     }
 }

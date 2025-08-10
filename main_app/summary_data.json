@@ -1,55 +1,55 @@
 {
     "Code Setting": {
-        "Building Code": "International Building Code 2018",
+        "Building Code": "International Building Code 2021",
         "Standard Version": "7-16",
-        "Occupancy Group": "Essential facilities (fire, police, EMS, designated shelters, emergency ops centers)",
-        "Risk Category": "IV",
-        "Risk Level": 4,
+        "Occupancy Group": "Group E (Education) \u2013 occupant load \u2264 250",
+        "Risk Category": "II",
+        "Risk Level": 2,
         "Roof Angle (deg)": 10.0,
         "Building Length (ft)": 5000.0,
         "Least Width (ft)": 2000.0,
-        "Mean Roof Height (ft)": 500.0,
+        "Mean Roof Height (ft)": 100.0,
         "Project Name": "Burj Al"
     },
     "Select Location": {
-        "Location": "Boise, UT",
-        "Latitude": 43.645702,
-        "Longitude": -116.012258
+        "Location": "Portland, OR",
+        "Latitude": 45.515197,
+        "Longitude": -122.678367
     },
     "Wind Module": {
         "Importance Factor": 1.0,
-        "MRI": 3000,
+        "MRI": 700,
         "Exposure Category": "B",
         "zg (ft)": 1200,
         "alpha": 7.0,
         "Topographic Factor (Kzt)": 1.0,
         "Ground Elevation Factor (Ke)": 1.0,
         "Wind Directionality Factor (Kd)": 0.85,
-        "Wind Speed (mph)": 113.206,
-        "Velocity Pressure, qz (psf)": 43.78
+        "Wind Speed (mph)": 96.6158,
+        "Velocity Pressure, qz (psf)": 20.11
     },
     "Snow Module": {
-        "Importance Factor": 1.2,
+        "Importance Factor": 1.0,
         "Thermal Factor (Ct)": 1.1,
         "Exposure Factor (Ce)": 0.9,
-        "Ground Snow Load (psf)": 15.0,
-        "Flat Ground Snow Load (psf)": 12.47
+        "Ground Snow Load (psf)": 11.0,
+        "Flat Ground Snow Load (psf)": 7.62
     },
     "Seismic Module": {
         "Seismic Resisting System": {
-            "Name": "moment_resisting_frame_systems-Steel special moment frames",
-            "R": 8,
-            "Omega": 3,
-            "Cd": 5.5
+            "Name": "building_frame_systems-Steel and concrete composite ordinary braced frames",
+            "R": 3,
+            "Omega": 2,
+            "Cd": 3
         },
         "Site Class": "D",
-        "Weight (kips)": 500000.0,
-        "Importance Factor": 1.5,
-        "Seismic Response Coefficient, Cs": 0.07,
-        "Base Shear (V)": 35000.0,
-        "Ss": 0.368,
-        "S1": 0.123,
-        "Sds": 0.37,
-        "Sd1": 0.193
+        "Weight (kips)": 50000.0,
+        "Importance Factor": 1.0,
+        "Seismic Response Coefficient, Cs": 0.23,
+        "Base Shear (V)": 11500.0,
+        "Ss": 0.887,
+        "S1": 0.396,
+        "Sds": 0.677,
+        "Sd1": null
     }
 }

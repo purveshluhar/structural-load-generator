@@ -23,7 +23,7 @@ def setup_socket_server(port=5600):
     socket = context.socket(zmq.REP)
     socket.bind(f"tcp://*:{port}")
 
-    print(f"[weather-packing-service] listening on tcp://*:{port}")
+    print(f"[snow_load_service] listening on tcp://*:{port}")
     return socket
 
 def setup_socket_client(port=5600):

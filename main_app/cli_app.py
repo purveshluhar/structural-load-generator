@@ -1,3 +1,7 @@
+"""
+Main Program to run the structural load generator
+"""
+
 import json
 from typing import Callable
 from dotenv import load_dotenv
@@ -583,6 +587,11 @@ def get_lat_long():
     summary_data["Select Location"]["Latitude"] = message["lat"]
     summary_data["Select Location"]["Longitude"] = message["lon"]
 
+    print("----SELECT LOCATION MODULE OUTPUT----")
+    print(f"Building Location: {input_data["Select Location"]["Location"]}")
+    print(f"Latitude: {message['lat']}")
+    print(f"Longitude: {message['lat']}")
+
     global auto_step
     if auto_step:
         return wind_module()
@@ -693,16 +702,21 @@ def get_wind_loads():
         "Building Code": summary_data["Code Setting"]["Building Code"]
     }
 
-    # Send location to geo-locator
+    # Send location and user input to wind_service
     send_message_json(socket, req_data)
 
-    # Receive seismic load and spectrum value
+    # Receive wind load
     message = recv_message_json(socket)
 
     for key, item in message.items():
         if "Error" in key:
             break
         summary_data["Wind Module"][key] = item
+
+    print("----WIND MODULE OUTPUT----")
+    arr = ["Wind Speed (mph)", "Velocity Pressure, qz (psf)"]
+    for item in arr:
+        print(f"{item}: {summary_data["Wind Module"][item]}")
 
     global auto_step
     if auto_step:
@@ -824,7 +838,7 @@ def get_seismic_load():
         "Building Code": summary_data["Code Setting"]["Building Code"]
     }
 
-    # Send location to geo-locator
+    # Send location and user input to snow_service
     send_message_json(socket, req_data)
 
     # Receive seismic load and spectrum value
@@ -834,6 +848,11 @@ def get_seismic_load():
         if "Error" in key:
             break
         summary_data["Seismic Module"][key] = item
+
+    print("----SEISMIC MODULE OUTPUT----")
+    arr = ["Base Shear (V)", "Ss", "S1", "Sds", "Seismic Response Coefficient, Cs"]
+    for item in arr:
+        print(f"{item}: {summary_data["Seismic Module"][item]}")
 
     global auto_step
     if auto_step:
@@ -923,16 +942,21 @@ def get_snow_loads():
         "Building Code": summary_data["Code Setting"]["Building Code"]
     }
 
-    # Send location to snow-service
+    # Send location and user input to snow-service
     send_message_json(socket, req_data)
 
-    # Receive snow load and spectrum value
+    # Receive snow load
     message = recv_message_json(socket)
 
     for key, item in message.items():
         if "Error" in key:
             break
         summary_data["Snow Module"][key] = item
+
+    print("----SNOW MODULE OUTPUT----")
+    arr = ["Ground Snow Load (psf)", "Flat Ground Snow Load (psf)"]
+    for item in arr:
+        print(f"{item}: {summary_data["Snow Module"][item]}")
 
     global auto_step
     if auto_step:
