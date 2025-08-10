@@ -81,7 +81,7 @@ def run_service():
             # Send calculated load to client
             send_message_json(socket, {
                 "Wind Speed (mph)": f_val['V'],
-                "qz (psf)": r
+                "Velocity Pressure, qz (psf)": r
             })
         else:
             send_message_json(socket, api_data)

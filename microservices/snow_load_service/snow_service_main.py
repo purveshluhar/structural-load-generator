@@ -55,9 +55,19 @@ def run_service():
         api_data = get_request(url, recv_data, token)
 
         if "Error" not in api_data:
-            ground_snow_load = float(api_data.get("snow", {}).get("snowResults",
-                        [{}])[0].get("features", [{}])[0].get("attributes",
-                                {}).get("Display_1"))
+            arr = ["Display_1", "Load1_1", "Load2_1", "Load3_1", "Load4_1"]
+            ground_snow_load = None
+            for item in arr:
+                try:
+                    ground_snow_load = float(api_data.get("snow", {}).get(
+                        "snowResults", [{}])[0].get("features",
+                            [{}])[0].get("attributes", {}).get(item))
+                    break
+                except (ValueError or TypeError):
+                    continue
+
+            if ground_snow_load is None:
+                ground_snow_load = 20
 
             f_val = {
                 'Ce': recv_data['Ce'],

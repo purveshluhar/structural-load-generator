@@ -78,11 +78,12 @@ def run_service():
 
             # Send calculated load to client
             send_message_json(socket, {
-                "V": r,
+                "Base Shear (V)": r,
                 "Ss": api_data["response"]["data"]["ss"],
                 "S1": api_data["response"]["data"]["s1"],
                 "Sds": api_data["response"]["data"]["sds"],
-                "Sd1": api_data["response"]["data"]["sd1"]
+                "Sd1": api_data["response"]["data"]["sd1"],
+                "Seismic Response Coefficient, Cs": f_val["Cs"]
             })
 
         else:

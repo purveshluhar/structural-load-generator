@@ -14,7 +14,7 @@ page_history_stack: list[Callable] = [exit]
 input_data = {}
 # Global variable to store code_data
 code_data = {}
-# Global variable to store summary data
+# Global variable to store summary calculation data
 summary_data = {}
 
 def process_json(f_path, mode='r'):
@@ -201,13 +201,15 @@ def main_menu():
     """
 
     option_str = {
-        1: "Code Setting        [ Set building code, occupancy, risk, "
+        1: "Code Setting            [ Set building code, occupancy, risk, "
             "geometry ]",
-        2: "Select Location     [ Enter the site location of the building ]",
-        3: "Wind Module         [ Generate Wind Loads ]",
-        4: "Seismic Module      [ Generate Seismic Loads ]",
-        5: "Snow Module         [ Generate Snow Loads ]",
-        6: "Summary of Inputs   [ Prints the summary of inputs ]"
+        2: "Select Location         [ Enter the site location of the building ]",
+        3: "Wind Module             [ Generate Wind Loads ]",
+        4: "Seismic Module          [ Generate Seismic Loads ]",
+        5: "Snow Module             [ Generate Snow Loads ]",
+        6: "Summary of Inputs       [ Prints the summary of inputs provided ]",
+        7: "Calculation Summary     [ Shows calculation summary of the "
+           "building ]"
     }
 
     create_view(
@@ -233,6 +235,7 @@ def main_menu():
         case '4': seismic_module()
         case '5': snow_module()
         case '6': summary_inputs()
+        case '7': calculation_summary()
         case _: code_setting()
 
 
@@ -497,18 +500,24 @@ def summary_inputs():
             select_occupancy_group()
         case '3':
             manual_select_risk_category()
-        case '4' | '5' | '6' | '7':
+        case '4' | '5' | '6' | '7' | '8':
             input_building_geometry()
-        case '8' | '9' | '10':
+        case '9':
             select_location()
+        case '10' | '11' | '12' | '13':
+            wind_module()
+        case '14' | '15':
+            snow_module()
+        case '16' | '17' | '18':
+            seismic_module()
         case _:
             main_menu()
 
 def write_json(filepath, data):
     """
-
-    :param filepath:
-    :param data:
+    Writes data to the filepath provided
+    :param filepath: str
+    :param data: JSON
     :return:
     """
 
@@ -610,7 +619,7 @@ def wind_module():
 
 def get_wind_inputs():
     """
-
+    Gets wind inputs from the user
     :return:
     """
 
@@ -655,7 +664,7 @@ def get_wind_inputs():
 
 def get_wind_loads():
     """
-
+    Calls wind_load_service to get loads as per location provided
     :return:
     """
 
@@ -678,14 +687,11 @@ def get_wind_loads():
         "z": summary_data["Code Setting"]["Mean Roof Height (ft)"],
         "zg": summary_data["Wind Module"]["zg (ft)"],
         "alpha": summary_data["Wind Module"]["alpha"],
-        "Kzt": summary_data["Wind Module"]["Kzt"],
-        "Ke": summary_data["Wind Module"]["Ke"],
-        "Kd": summary_data["Wind Module"]["Kd"],
+        "Kzt": summary_data["Wind Module"]["Topographic Factor (Kzt)"],
+        "Ke": summary_data["Wind Module"]["Ground Elevation Factor (Ke)"],
+        "Kd": summary_data["Wind Module"]["Wind Directionality Factor (Kd)"],
         "Building Code": summary_data["Code Setting"]["Building Code"]
     }
-
-    write_json("summary_data.json", summary_data)
-    write_json("input_data.json", input_data)
 
     # Send location to geo-locator
     send_message_json(socket, req_data)
@@ -864,7 +870,7 @@ def snow_module():
 
 def get_snow_inputs():
     """
-
+    Receives snow inputs from the user
     :return:
     """
 
@@ -872,7 +878,6 @@ def get_snow_inputs():
     global summary_data
 
     option_str = create_dict(input_data["Snow Module"])
-    building_code = summary_data["Code Setting"]["Building Code"]
 
     for key, value in option_str.items():
         print(f"\nSelect the {value}: ")
@@ -893,7 +898,7 @@ def get_snow_inputs():
 
 def get_snow_loads():
     """
-
+    Calls snow_load_service to calculate snow loads
     :return:
     """
 
@@ -912,8 +917,8 @@ def get_snow_loads():
         "lon": summary_data["Select Location"]["Longitude"],
         "standardsVersion": summary_data["Code Setting"]["Standard Version"],
         "riskLevel": summary_data["Code Setting"]["Risk Level"],
-        "Ce": summary_data["Snow Module"]["Ce"],
-        "Ct": summary_data["Snow Module"]["Ct"],
+        "Ce": summary_data["Snow Module"]["Exposure Factor (Ce)"],
+        "Ct": summary_data["Snow Module"]["Thermal Factor (Ct)"],
         "I": summary_data["Snow Module"]["Importance Factor"],
         "Building Code": summary_data["Code Setting"]["Building Code"]
     }
@@ -935,6 +940,75 @@ def get_snow_loads():
     else:
         return page_history_stack.pop()()
 
+def calculation_summary():
+    """
+    Shows calculation summary report
+    :return:
+    """
+
+    global summary_data
+
+    print(
+        "-----------------------------------------------------------------------------------")
+    print("CALCULATION SUMMARY FOR THE PROJECT")
+    print(
+        "-----------------------------------------------------------------------------------")
+
+    to_print = {
+        "PROJECT INFO": {
+            "Project Name": "Code Setting",
+            "Location": "Select Location",
+            "Latitude": "Select Location",
+            "Longitude": "Select Location",
+            "Building Code": "Code Setting"
+        },
+        "GENERAL BUILDING PARAMETERS": {
+            "Occupancy Group": "Code Setting",
+            "Risk Category": "Code Setting",
+            "Roof Angle (deg)": "Code Setting",
+            "Building Length (ft)": "Code Setting",
+            "Least Width (ft)": "Code Setting",
+            "Mean Roof Height (ft)": "Code Setting"
+        },
+        "WIND LOAD SUMMARY": {
+            "Wind Speed (mph)": "Wind Module",
+            "Exposure Category": "Wind Module",
+            "MRI": "Wind Module",
+            "Importance Factor": "Wind Module",
+            "Velocity Pressure, qz (psf)": "Wind Module",
+        },
+        "SNOW LOAD SUMMARY": {
+            "Importance Factor": "Snow Module",
+            "Ground Snow Load (psf)": "Snow Module",
+            "Flat Ground Snow Load (psf)": "Snow Module"
+        },
+        "SEISMIC LOAD SUMMARY": {
+            "Site Class": "Seismic Module",
+            "Importance Factor": "Seismic Module",
+            "Ss": "Seismic Module",
+            "S1": "Seismic Module",
+            "Sds": "Seismic Module",
+            "Sd1": "Seismic Module",
+            "Seismic Response Coefficient, Cs": "Seismic Module",
+            "Base Shear (V)": "Seismic Module",
+            "Seismic Resisting System": "Seismic Module",
+        }
+    }
+
+    for index, (key, value) in enumerate(to_print.items()):
+        print(f"{index+1}. {key}")
+        for ckey, cvalue in value.items():
+            if "Seismic Resisting System" in ckey:
+                print(f"    • {ckey}: {summary_data[cvalue][ckey]['Name']}")
+            else:
+                print(f"    • {ckey}: {summary_data[cvalue][ckey]}")
+        print("")
+
+    print("*        - Go back to Main Menu\n")
+
+    message = "Type '*' to go back: > "
+    get_inp(is_range=False, input_typ=str, display=message)
+
 
 def main():
     """
@@ -950,13 +1024,13 @@ def main():
     global input_data
     input_data = process_json(f_path)
 
-    #clear_JSON_data(input_data)
+    clear_JSON_data(input_data)
 
     f_path = "summary_data.json"
     global summary_data
     summary_data = process_json(f_path)
 
-    #clear_JSON_data(summary_data)
+    clear_JSON_data(summary_data)
 
     main_menu()
 
