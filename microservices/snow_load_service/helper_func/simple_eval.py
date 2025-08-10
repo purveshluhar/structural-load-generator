@@ -18,4 +18,4 @@ def formula_eval(val, formula):
     s = SimpleEval()
     s.names = val
 
-    return s.eval(formula)
+    return round(s.eval(formula), 2)

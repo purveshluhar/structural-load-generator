@@ -1,0 +1,58 @@
+{
+  "International Building Code 2021": {
+    "qz": {
+      "expression": "0.00256 * Kz * Kzt * Ke * Kd * (V ** 2)",
+      "variables": ["Kz", "Kzt", "Ke", "Kd", "V"]
+    },
+    "Kz": {
+      "condition": "15 <= z <= zg",
+      "condition_var": ["z", "zg"],
+      "true_expression": "2.01 * (z/zg) ** (2/alpha)",
+      "true_variables": ["z", "zg", "alpha"],
+      "false_expression": "2.01 * (15/zg) ** (2/alpha)",
+      "false_variables": ["z", "alpha"]
+    }
+  },
+  "International Building Code 2018": {
+    "qz": {
+      "expression": "0.00256 * Kz * Kzt * Ke * Kd * (V ** 2)",
+      "variables": ["Kz", "Kzt", "Ke", "Kd", "V"]
+    },
+    "Kz": {
+      "condition": "15 <= z <= zg",
+      "condition_var": ["z", "zg"],
+      "true_expression": "2.01 * (z/zg) ** (2/alpha)",
+      "true_variables": ["z", "zg", "alpha"],
+      "false_expression": "2.01 * (15/zg) ** (2/alpha)",
+      "false_variables": ["z", "alpha"]
+    }
+  },
+  "ASCE 7-16": {
+    "qz": {
+      "expression": "0.00256 * Kz * Kzt * Ke * Kd * (V ** 2)",
+      "variables": ["Kz", "Kzt", "Ke", "Kd", "V"]
+    },
+    "Kz": {
+      "condition": "15 <= z <= zg",
+      "condition_var": ["z", "zg"],
+      "true_expression": "2.01 * (z/zg) ** (2/alpha)",
+      "true_variables": ["z", "zg", "alpha"],
+      "false_expression": "2.01 * (15/zg) ** (2/alpha)",
+      "false_variables": ["z", "alpha"]
+    }
+  },
+  "Unified Facilities Criteria": {
+    "qz": {
+      "expression": "0.00256 * Kz * Kzt * Ke * Kd * (V ** 2)",
+      "variables": ["Kz", "Kzt", "Ke", "Kd", "V"]
+    },
+    "Kz": {
+      "condition": "15 <= z <= zg",
+      "condition_var": ["z", "zg"],
+      "true_expression": "2.01 * (z/zg) ** (2/alpha)",
+      "true_variables": ["z", "zg", "alpha"],
+      "false_expression": "2.01 * (15/zg) ** (2/alpha)",
+      "false_variables": ["z", "alpha"]
+    }
+  }
+}

@@ -11,12 +11,18 @@ from helper_func.request import get_request
 from helper_func.socket_handler import (setup_socket_server,
                                         send_message_json, recv_message_json)
 from helper_func.check_data import check_data
+from helper_func.simple_eval import formula_eval
+import json
 
 def run_service():
     """
     Main to run the service
     :return:
     """
+
+    # Load snow formula
+    with open("snow_formula.json", 'r') as fd:
+        formulas = json.load(fd)
 
     # Load the PORT from the .env
     load_dotenv()
@@ -39,7 +45,38 @@ def run_service():
 
         url = "https://api-hazard.asce.org/v1/snow"
 
-        data = get_request(url, recv_data, token)
+        req_data = {
+            "lat": recv_data["lat"],
+            "lon": recv_data["lon"],
+            "standardsVersion": recv_data["standardsVersion"],
+            "riskLevel": recv_data["riskLevel"]
+        }
+
+        api_data = get_request(url, recv_data, token)
+
+        if "Error" not in api_data:
+            ground_snow_load = float(api_data.get("snow", {}).get("snowResults",
+                        [{}])[0].get("features", [{}])[0].get("attributes",
+                                {}).get("Display_1"))
+
+            f_val = {
+                'Ce': recv_data['Ce'],
+                'Ct': recv_data['Ct'],
+                'I': recv_data['I'],
+                'Pg': ground_snow_load
+            }
+
+            building_code = recv_data["Building Code"]
+
+            r = formula_eval(f_val, formulas[building_code]["pf"]["expression"])
+
+            # Send calculated now load to client
+            send_message_json(socket, {
+                "Ground Snow Load (psf)": ground_snow_load,
+                "Flat Ground Snow Load (psf)": r
+            })
+        else:
+            send_message_json(socket, api_data)
 
 
 if __name__ == "__main__":

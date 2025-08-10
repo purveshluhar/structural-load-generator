@@ -1,5 +1,6 @@
 {
   "International Building Code 2021": {
+    "Standard Version": "7-16",
     "OccupancyGroups": {
       "Group A (Assembly) – occupant load ≤ 300": "II",
       "Group A (Assembly) – occupant load > 300": "III",
@@ -40,10 +41,10 @@
       "All others": "II"
     },
     "RiskCategories": {
-      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00 },
-      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00 },
-      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25 },
-      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50 }
+      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00, "Level": 1, "MRI": 300 },
+      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00, "Level": 2, "MRI": 700 },
+      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25, "Level": 3, "MRI": 1700 },
+      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50, "Level": 4, "MRI": 3000 }
     },
     "Snow": {
       "Thermal Factor_Ct":{
@@ -732,9 +733,17 @@
         "Very loose sand or soft clay": "E",
         "Soils requiring site-specific evaluation (see code for exceptions)": "F"
       }
+    },
+    "Wind": {
+      "Exposure Category": {
+        "B": { "alpha": 7.0, "zg (ft)": 1200 },
+        "C": { "alpha": 9.5, "zg (ft)": 900 },
+        "D": { "alpha": 11.5, "zg (ft)": 700 }
+      }
     }
   },
   "International Building Code 2018": {
+    "Standard Version": "7-16",
     "OccupancyGroups": {
       "Group A (Assembly) – occupant load ≤ 300": "II",
       "Group A (Assembly) – occupant load > 300": "III",
@@ -775,13 +784,14 @@
       "All others": "II"
     },
     "RiskCategories": {
-      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00 },
-      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00 },
-      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25 },
-      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50 }
+      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00, "Level": 1, "MRI": 300 },
+      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00, "Level": 2, "MRI": 700 },
+      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25, "Level": 3, "MRI": 1700 },
+      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50, "Level": 4, "MRI": 3000 }
     }
   },
   "ASCE 7-16": {
+    "Standard Version": "7-16",
     "OccupancyGroups": {
       "Category I - Low-hazard": "I",
       "Category II — Standard occupancy": "II",
@@ -789,13 +799,14 @@
       "Category IV — Essential facilities": "IV"
     },
     "RiskCategories": {
-      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00 },
-      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00 },
-      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25 },
-      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50 }
+      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00, "Level": 1, "MRI": 300 },
+      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00, "Level": 2, "MRI": 700 },
+      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25, "Level": 3, "MRI": 1700 },
+      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50, "Level": 4, "MRI": 3000 }
     }
   },
   "Unified Facilities Criteria": {
+    "Standard Version": "7-16",
     "OccupancyGroups": {
       "Category I — Low hazard": "I",
       "Category II — Standard occupancy": "II",
@@ -804,11 +815,11 @@
       "Category V — National strategic military assets": "V"
     },
     "RiskCategories": {
-      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00 },
-      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00 },
-      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25 },
-      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50 },
-      "V":  { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.00 }
+      "I":  { "Wind": 1.0, "Snow": 0.80, "Seismic": 1.00, "Level": 1, "MRI": 300 },
+      "II": { "Wind": 1.0, "Snow": 1.00, "Seismic": 1.00, "Level": 2, "MRI": 700 },
+      "III":{ "Wind": 1.0, "Snow": 1.10, "Seismic": 1.25, "Level": 3, "MRI": 1700 },
+      "IV": { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.50, "Level": 4, "MRI": 3000 },
+      "V":  { "Wind": 1.0, "Snow": 1.20, "Seismic": 1.00, "Level": 3, "MRI": 3000 }
     }
   }
 }

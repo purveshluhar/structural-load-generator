@@ -55,34 +55,38 @@ def run_service():
 
         api_data = get_request(url, req_data)
 
-        f_val = {
-            "Sds": api_data["response"]["data"]["sds"],
-            "R": recv_data["R"],
-            "I": recv_data["I"]
-        }
+        if "Error" not in api_data:
+            f_val = {
+                "Sds": api_data["response"]["data"]["sds"],
+                "R": recv_data["R"],
+                "I": recv_data["I"]
+            }
 
-        # Calculate Cs
-        r = formula_eval(f_val, formulas[recv_data["Building Code"]][
-            "Cs"]["expression"])
+            # Calculate Cs
+            r = formula_eval(f_val, formulas[recv_data["Building Code"]][
+                "Cs"]["expression"])
 
-        # Calculate V
-        f_val = {
-            "Cs": r,
-            "W": recv_data["W"]
-        }
+            # Calculate V
+            f_val = {
+                "Cs": r,
+                "W": recv_data["W"]
+            }
 
-        # Calculate V
-        r = formula_eval(f_val, formulas[recv_data["Building Code"]][
-            "V"]["expression"])
+            # Calculate V
+            r = formula_eval(f_val, formulas[recv_data["Building Code"]][
+                "V"]["expression"])
 
-        # Send calculated load to client
-        send_message_json(socket, {
-            "V": r,
-            "Ss": api_data["response"]["data"]["ss"],
-            "S1": api_data["response"]["data"]["s1"],
-            "Sds": api_data["response"]["data"]["sds"],
-            "Sd1": api_data["response"]["data"]["sd1"]
-        })
+            # Send calculated load to client
+            send_message_json(socket, {
+                "V": r,
+                "Ss": api_data["response"]["data"]["ss"],
+                "S1": api_data["response"]["data"]["s1"],
+                "Sds": api_data["response"]["data"]["sds"],
+                "Sd1": api_data["response"]["data"]["sd1"]
+            })
+
+        else:
+            send_message_json(socket, api_data)
 
 
 if __name__ == "__main__":

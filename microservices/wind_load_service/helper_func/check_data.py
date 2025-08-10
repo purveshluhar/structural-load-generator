@@ -5,7 +5,7 @@ Includes:
 - check_data()
 """
 
-def check_data(data:bytearray):
+def check_data(data:dict):
     """
     Checks the data requested from the client and returns if the data is
     valid or invalid with the invalid response message.
@@ -13,19 +13,17 @@ def check_data(data:bytearray):
     :return: bool, str
     """
 
-    req_key = ['lat', 'lon', 'standardsVersion', 'riskLevel']
+    req_key = ['lat', 'lon', 'standardsVersion', 'riskLevel', 'MRI', 'z',
+               'zg', 'alpha', 'Kzt', 'Ke', 'Kd', 'Building Code']
     message = {}
 
-    for value in data:
-        value:dict
-        # Check the received data
-        if len(value) != len(req_key):
-            message["Error"] = "Received Invalid Data!"
+    if len(data) != len(req_key):
+        message["Error"] = "Received Invalid Data!"
+        return False, message
+
+    for key, value in data.items():
+        if key not in req_key:
+            message["Error"] = "Received Invalid Keys!"
             return False, message
-        else:
-            for key, cvalue in value.items():
-                if key not in req_key:
-                    message["Error"] = "Received Invalid Keys, Try again!"
-                    return False, message
 
     return True, message

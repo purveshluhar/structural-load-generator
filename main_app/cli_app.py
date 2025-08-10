@@ -305,6 +305,8 @@ def select_building_code():
     building_code = option_str[int(choice)]
     input_data["Code Setting"]["Building Code"] = building_code
     summary_data["Code Setting"]["Building Code"] = building_code
+    summary_data["Code Setting"]["Standard Version"] = code_data[
+        building_code]["Standard Version"]
 
     confirm_selection(option_str[int(choice)], select_building_code,
                       select_occupancy_group)
@@ -347,6 +349,11 @@ def select_occupancy_group():
     for item in arr:
         summary_data[f"{item} Module"]["Importance Factor"] = code_data[
             building_code]["RiskCategories"][risk_category][item]
+
+    summary_data["Code Setting"]["Risk Level"] = code_data[building_code][
+        "RiskCategories"][risk_category]["Level"]
+    summary_data["Wind Module"]["MRI"] = code_data[building_code][
+        "RiskCategories"][risk_category]["MRI"]
 
     confirm_selection(occupancy_group, select_occupancy_group,
                       input_building_geometry)
@@ -395,6 +402,11 @@ def manual_select_risk_category():
     for item in arr:
         summary_data[f"{item} Module"]["Importance Factor"] = code_data[
             building_code]["RiskCategories"][risk_category][item]
+
+    summary_data["Code Setting"]["Risk Level"] = code_data[building_code][
+        "RiskCategories"][risk_category]["Level"]
+    summary_data["Wind Module"]["MRI"] = code_data[building_code][
+        "RiskCategories"][risk_category]["MRI"]
 
     confirm_selection(risk_category, manual_select_risk_category,
                       input_building_geometry)
@@ -575,7 +587,122 @@ def wind_module():
     :return:
     """
 
-    pass
+    global input_data
+
+    option_str = create_dict(input_data["Wind Module"])
+
+    create_view(
+        [
+            "WIND MODULE",
+            "You will be asked to provide the following: "
+        ], option_str
+    )
+
+    print("start    - To begin input")
+    print("*        - Go back to Code Settings\n")
+
+    message = "Type 'start' to begin or '*' to go back: > "
+    get_inp(is_range=False, display=message, input_typ=str)
+
+    get_wind_inputs()
+    get_wind_loads()
+
+
+def get_wind_inputs():
+    """
+
+    :return:
+    """
+
+    global input_data
+    global summary_data
+
+    option_str = create_dict(input_data["Wind Module"])
+    building_code = summary_data["Code Setting"]["Building Code"]
+
+    for key, value in option_str.items():
+        print(f"\nSelect the {value}: ")
+        if value == "Exposure Category":
+            sub_menu = create_dict(code_data[building_code]["Wind"][value])
+            for index, (ckey, cvalue) in enumerate(sub_menu.items()):
+                print(f"{index + 1}. {cvalue}")
+
+            choice = get_inp(1, len(sub_menu))
+            exposure_cat = sub_menu[int(choice)]
+            input_data["Wind Module"][value] = exposure_cat
+            summary_data["Wind Module"][value] = exposure_cat
+            summary_data["Wind Module"]["zg (ft)"] = code_data[building_code][
+                "Wind"][value][exposure_cat]['zg (ft)']
+            summary_data["Wind Module"]["alpha"] = code_data[building_code][
+                "Wind"][value][exposure_cat]['alpha']
+
+        else:
+            choice = get_inp(display=f"{key}. {value}: > ", input_typ=float,
+                             is_range=False)
+            input_data["Wind Module"][value] = choice
+            summary_data["Wind Module"][value] = choice
+
+    message = ""
+    for index, (key, value) in enumerate(option_str.items()):
+        p_val = input_data['Wind Module'][value]
+        message += f"{value}: {p_val}"
+        if index + 1 != len(option_str):
+            message += "\n"
+
+    confirm_selection(message, wind_module, exception=True)
+    return
+
+
+def get_wind_loads():
+    """
+
+    :return:
+    """
+
+    global summary_data
+    global input_data
+
+    # Load the PORT from .env
+    load_dotenv()
+    port = os.getenv("WIND_PORT")
+
+    # Set up the socket
+    socket = setup_socket_client(port)
+
+    req_data = {
+        "lat": summary_data["Select Location"]["Latitude"],
+        "lon": summary_data["Select Location"]["Longitude"],
+        "standardsVersion": summary_data["Code Setting"]["Standard Version"],
+        "riskLevel": summary_data["Code Setting"]["Risk Level"],
+        "MRI": str(summary_data["Wind Module"]["MRI"]),
+        "z": summary_data["Code Setting"]["Mean Roof Height (ft)"],
+        "zg": summary_data["Wind Module"]["zg (ft)"],
+        "alpha": summary_data["Wind Module"]["alpha"],
+        "Kzt": summary_data["Wind Module"]["Kzt"],
+        "Ke": summary_data["Wind Module"]["Ke"],
+        "Kd": summary_data["Wind Module"]["Kd"],
+        "Building Code": summary_data["Code Setting"]["Building Code"]
+    }
+
+    write_json("summary_data.json", summary_data)
+    write_json("input_data.json", input_data)
+
+    # Send location to geo-locator
+    send_message_json(socket, req_data)
+
+    # Receive seismic load and spectrum value
+    message = recv_message_json(socket)
+
+    for key, item in message.items():
+        if "Error" in key:
+            break
+        summary_data["Wind Module"][key] = item
+
+    global auto_step
+    if auto_step:
+        return seismic_module()
+    else:
+        return page_history_stack.pop()()
 
 
 def seismic_module():
@@ -715,7 +842,98 @@ def snow_module():
     :return:
     """
 
-    pass
+    global input_data
+
+    option_str = create_dict(input_data["Snow Module"])
+
+    create_view(
+        [
+            "SNOW MODULE",
+            "You will be asked to provide the following: "
+        ], option_str
+    )
+
+    print("start    - To begin input")
+    print("*        - Go back to Code Settings\n")
+
+    message = "Type 'start' to begin or '*' to go back: > "
+    get_inp(is_range=False, display=message, input_typ=str)
+
+    get_snow_inputs()
+    get_snow_loads()
+
+def get_snow_inputs():
+    """
+
+    :return:
+    """
+
+    global input_data
+    global summary_data
+
+    option_str = create_dict(input_data["Snow Module"])
+    building_code = summary_data["Code Setting"]["Building Code"]
+
+    for key, value in option_str.items():
+        print(f"\nSelect the {value}: ")
+        choice = get_inp(display=f"{key}. {value}: > ", input_typ=float,
+                         is_range=False)
+        input_data["Snow Module"][value] = choice
+        summary_data["Snow Module"][value] = choice
+
+    message = ""
+    for index, (key, value) in enumerate(option_str.items()):
+        p_val = input_data['Snow Module'][value]
+        message += f"{value}: {p_val}"
+        if index + 1 != len(option_str):
+            message += "\n"
+
+    confirm_selection(message, snow_module, exception=True)
+    return
+
+def get_snow_loads():
+    """
+
+    :return:
+    """
+
+    global summary_data
+    global input_data
+
+    # Load the PORT from .env
+    load_dotenv()
+    port = os.getenv("SNOW_PORT")
+
+    # Set up the socket
+    socket = setup_socket_client(port)
+
+    req_data = {
+        "lat": summary_data["Select Location"]["Latitude"],
+        "lon": summary_data["Select Location"]["Longitude"],
+        "standardsVersion": summary_data["Code Setting"]["Standard Version"],
+        "riskLevel": summary_data["Code Setting"]["Risk Level"],
+        "Ce": summary_data["Snow Module"]["Ce"],
+        "Ct": summary_data["Snow Module"]["Ct"],
+        "I": summary_data["Snow Module"]["Importance Factor"],
+        "Building Code": summary_data["Code Setting"]["Building Code"]
+    }
+
+    # Send location to snow-service
+    send_message_json(socket, req_data)
+
+    # Receive snow load and spectrum value
+    message = recv_message_json(socket)
+
+    for key, item in message.items():
+        if "Error" in key:
+            break
+        summary_data["Snow Module"][key] = item
+
+    global auto_step
+    if auto_step:
+        return summary_inputs()
+    else:
+        return page_history_stack.pop()()
 
 
 def main():
@@ -732,13 +950,13 @@ def main():
     global input_data
     input_data = process_json(f_path)
 
-    clear_JSON_data(input_data)
+    #clear_JSON_data(input_data)
 
     f_path = "summary_data.json"
     global summary_data
     summary_data = process_json(f_path)
 
-    clear_JSON_data(summary_data)
+    #clear_JSON_data(summary_data)
 
     main_menu()
 
